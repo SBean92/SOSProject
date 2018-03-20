@@ -29,12 +29,11 @@ def main():
                         mylist.append(new_value)
                 else:
                     mylist.append(value)
-            f = urlreq.urlopen('https://l.facebook.com/l.php?u=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1pVPKJxD6Bdmfv6dO-eHXw-YsJSO5QBDyIoiGuxh3n9k%2Fedit%3Fusp%3Dsharing&h=ATOVrf9M0f9t3wjassGzf9wEVHyBZRb_qXA0_xwilGMWH7qk8CzTg_ixgsMj9ucpZn9tHhrQhlwdGILJKBX7asMAjkzGHMOKqBvU5A-ALmtRkLB4-Ply2w')
+            
 
-            with open(f, 'a') as csvfile:
+            with open(r"bikes.csv", 'a') as csvfile:
                 bike_writer = csv.writer(csvfile, lineterminator = '\n')
                 bike_writer.writerow(mylist)
-                r = requests.post('https://l.facebook.com/l.php?u=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1pVPKJxD6Bdmfv6dO-eHXw-YsJSO5QBDyIoiGuxh3n9k%2Fedit%3Fusp%3Dsharing&h=ATOVrf9M0f9t3wjassGzf9wEVHyBZRb_qXA0_xwilGMWH7qk8CzTg_ixgsMj9ucpZn9tHhrQhlwdGILJKBX7asMAjkzGHMOKqBvU5A-ALmtRkLB4-Ply2w', files={'bikes.csv': f})
 
         time.sleep(120)
 
