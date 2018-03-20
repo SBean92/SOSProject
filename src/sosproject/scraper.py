@@ -9,24 +9,28 @@ from jsonschema.validators import requests
 import csv
 import time
 
-while True:
-    response = requests.get("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=cf7b17e2c126f2e1998430272919516c5acb5538")
-    data = response.json()
-    print(response.status_code)
+def main():
+    while True:
+        response = requests.get("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=cf7b17e2c126f2e1998430272919516c5acb5538")
+        data = response.json()
+        print(response.status_code)
 
-    for i in data:
-        mylist=[]
-        for key, value in i.items():
-            if key == "position":
-                for new_key, new_value in value.items():
-                    mylist.append(new_value)
-            else:
-                mylist.append(value)
+        for i in data:
+            mylist=[]
+            for key, value in i.items():
+                if key == "position":
+                    for new_key, new_value in value.items():
+                        mylist.append(new_value)
+                else:
+                    mylist.append(value)
+            
+            with open(r'bikes.csv', 'a') as csvfile:
+                bike_writer = csv.writer(csvfile, lineterminator = '\n')
+                bike_writer.writerow(mylist)
         
-        with open(r'bikes.csv', 'a') as csvfile:
-            bike_writer = csv.writer(csvfile, lineterminator = '\n')
-            bike_writer.writerow(mylist)
-    
-    time.sleep(120)   
+        time.sleep(120)
+
+if __name__ == "__main__":
+    main()
 
     
