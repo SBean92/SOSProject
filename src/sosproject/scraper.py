@@ -1,7 +1,7 @@
 '''
 Created on 16 Mar 2018
 
-@author: shane
+@author: shane, sean, oz
 
 Practice for learning to access API
 '''
