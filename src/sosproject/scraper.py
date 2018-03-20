@@ -9,6 +9,7 @@ from jsonschema.validators import requests
 import csv
 import time
 import os
+import urllib.request as urlreq
 
 def main():
     while True:
@@ -28,11 +29,13 @@ def main():
                         mylist.append(new_value)
                 else:
                     mylist.append(value)
-            
-            with open(r'bikes.csv', 'a') as csvfile:
+            f = urlreq.urlopen(target url)
+
+            with open(f, 'a') as csvfile:
                 bike_writer = csv.writer(csvfile, lineterminator = '\n')
                 bike_writer.writerow(mylist)
-        
+                r = requests.post('http://httpbin.org/post', files={'bikes.csv': f})
+
         time.sleep(120)
 
 
