@@ -9,9 +9,10 @@ from jsonschema.validators import requests
 import csv
 import time
 import os
+import MySQLdb
 import urllib.request as urlreq
 
-def main():
+def scraper():
     while True:
         try:
             os.remove('bikes.csv')
@@ -35,7 +36,22 @@ def main():
                 bike_writer = csv.writer(csvfile, lineterminator = '\n')
                 bike_writer.writerow(mylist)
 
+        sqlWrite()
         time.sleep(120)
+
+def sqlWrite():
+    conn = MySQLdb.connect(host = "sosdbtest.ct7qgnaiih12.us-west-2.rds.amazonws.com", user = "sostest", passwd = "abcd1234", db = "bike")
+    cursor = conn.cursor()
+    csv_data = csv.reader(open('bikes.csv', 'r'))
+    for row in csv_data:
+        cursor.execute('INSERT INTO bike(number, c_name, st_name, address, lat, lng, banking, bonus, status, stands, a_stands, a_bikes, timestamp)' +
+                         'VALUES("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")', row)
+    conn.commit()
+    cursor.close()
+
+
+def main():
+    scraper()
 
 
 if __name__ == "__main__":
