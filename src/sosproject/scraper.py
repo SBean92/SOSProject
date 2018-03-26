@@ -37,15 +37,15 @@ def scraper():
                 bike_writer.writerow(mylist)
 
         sqlWrite()
-        time.sleep(120)
+        time.sleep(300)
 
 def sqlWrite():
-    conn = MySQLdb.connect(host = "sosdbtest.ct7qgnaiih12.us-west-2.rds.amazonws.com", user = "sostest", passwd = "abcd1234", db = "bike")
+    conn = MySQLdb.connect(host = 'sosdbtest.ct7qgnaiih12.us-west-2.rds.amazonaws.com', user = 'sostest', passwd = 'abcd1234', db = 'test')
     cursor = conn.cursor()
     csv_data = csv.reader(open('bikes.csv', 'r'))
     for row in csv_data:
-        cursor.execute('INSERT INTO bike(number, c_name, st_name, address, lat, lng, banking, bonus, status, stands, a_stands, a_bikes, timestamp)' +
-                         'VALUES("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")', row)
+        cursor.execute('INSERT INTO bike(number, street, address, lat, lng, banking, bonus, status, contract, stands, a_stands, a_bikes, timestamp)' +
+                         'VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', row)
     conn.commit()
     cursor.close()
 

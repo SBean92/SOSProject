@@ -1,0 +1,15 @@
+CREATE TABLE bike (
+    number int(20),
+    street varchar(50),
+    address varchar(50),
+    lat float,
+    lng float,
+    banking varchar(5),
+    bonus varchar(5),
+    status varchar(10),
+    contract varchar(10),
+    stands int(3),
+    a_stands int(3),
+    a_bikes int(3),
+    timestamp bigint(20)
+);
