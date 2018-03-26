@@ -35,9 +35,6 @@ def scraper():
                 bike_writer = csv.writer(csvfile, lineterminator = '\n')
                 bike_writer.writerow(mylist)
 
-        sqlWrite()
-        time.sleep(300)
-
 def sqlWrite():
     lines = 0
     conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
@@ -50,8 +47,19 @@ def sqlWrite():
     conn.commit()
     cursor.close()
     print("Inserting",lines,"lines into table")
+
 def main():
-    scraper()
+    while True:
+        try:
+            scraper()
+        except:
+            print("Error in getting data")
+        try:
+            sqlWrite()
+        except:
+            print("Error in inserting data")
+        time.sleep(300)
+
 
 if __name__ == "__main__":
     main()
