@@ -20,7 +20,6 @@ def scraper():
             pass
         response = requests.get("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=cf7b17e2c126f2e1998430272919516c5acb5538")
         data = response.json()
-        print(response.status_code)
 
         for i in data:
             mylist=[]
@@ -40,21 +39,19 @@ def scraper():
         time.sleep(300)
 
 def sqlWrite():
-    conn = MySQLdb.connect(host = 'sosdbtest.ct7qgnaiih12.us-west-2.rds.amazonaws.com', user = 'sostest', passwd = 'abcd1234', db = 'test')
+    lines = 0
+    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()
     csv_data = csv.reader(open('bikes.csv', 'r'))
     for row in csv_data:
+        lines += 1
         cursor.execute('INSERT INTO bike(number, street, address, lat, lng, banking, bonus, status, contract, stands, a_stands, a_bikes, timestamp)' +
                          'VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', row)
     conn.commit()
     cursor.close()
-
-
+    print("Inserting",lines,"lines into table")
 def main():
     scraper()
 
-
 if __name__ == "__main__":
     main()
-
-    
