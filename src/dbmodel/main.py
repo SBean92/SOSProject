@@ -13,22 +13,52 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class Guys(db.Model):
-    __tablename__ = 'test'
-    name = db.Column('name', db.Unicode, primary_key = True)
-    height = db.Column('height', db.Integer)
-    width = db.Column('width', db.Integer)
+    __tablename__ = 'bike'
+    number = db.Column('number', db.Integer, primary_key = True)
+    street = db.Column('street', db.Unicode)
+    address = db.Column('address', db.Unicode)
+    lat = db.Column('lat', db.Float)
+    lng = db.Column('lng', db.Float)
+    banking = db.Column('banking', db.Unicode)
+    bonus = db.Column('bonus', db.Unicode)
+    status = db.Column('status', db.Unicode)
+    contract = db.Column('contract', db.Unicode)
+    stands = db.Column('stands', db.Integer)
+    a_stands = db.Column('a_stands', db.Integer)
+    a_bikes = db.Column('a_bikes', db.Integer)
+    timestamp = db.Column('timestamp', db.BigInteger, primary_key = True)
     
-    def __init__(self, name, height, width):
-        self.name = name
-        self.height = height
-        self.width = width
+    def __init__(self, number, street, address, lat, lng, banking, bonus, status, contract, stands, a_stands, a_bikes, timestamp):
+        self.number = number
+        self.street = street
+        self.address = address
+        self.lat = lat
+        self.lng = lng
+        self.banking = banking
+        self.bonus = bonus
+        self.status = status
+        self.contract =  contract
+        self.stands = stands
+        self.a_stands = a_stands
+        self.a_bikes = a_bikes
+        self.timestamp = timestamp
 
 #Code adapted from http://piotr.banaszkiewicz.org/blog/2012/06/30/serialize-sqlalchemy-results-into-json/       
     @property
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
-           'name': self.name,
-           'height': self.height,
-           'width': self.width
+           'number': self.number = number,
+           'street': self.street = street,
+           'address': self.address = address,
+           'lat': self.lat = lat,
+           'lng': self.lng = lng,
+           'banking': self.banking = banking,
+           'bonus': self.bonus = bonus,
+           'status': self.status = status,
+           'contract': self.contract =  contract,
+           'stands': self.stands = stands,
+           'a_stands': self.a_stands = a_stands,
+           'a_bikes': self.a_bikes = a_bikes,
+           'timestamp': self.timestamp = timestamp
        }
