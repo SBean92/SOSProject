@@ -5,7 +5,7 @@ Created on 20 Mar 2018
 '''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from dbmodel.main import Guys
+from dbmodel.main import Bike_data
 import pymysql
 pymysql.install_as_MySQLdb()
 from flask.json import jsonify
@@ -19,8 +19,8 @@ db = SQLAlchemy(app)
 @app.route('/')
 
 def display():
-   guys = Guys.query.all()
-   return jsonify([i.serialize for i in guys])
+   bike_data = Bike_data.query.all()
+   return jsonify([i.serialize for i in bike_data])
 
 if __name__ == "__main__":
     app.run(debug=True)

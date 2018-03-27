@@ -3,7 +3,7 @@ Created on 19 Mar 2018
 
 @author: shane, sean, oz
 '''
-#with changesl
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class Guys(db.Model):
+class Bike_data(db.Model):
     __tablename__ = 'bike'
     number = db.Column('number', db.Integer, primary_key = True)
     street = db.Column('street', db.Unicode)
@@ -49,17 +49,17 @@ class Guys(db.Model):
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
-           'number': self.number = number,
-           'street': self.street = street,
-           'address': self.address = address,
-           'lat': self.lat = lat,
-           'lng': self.lng = lng,
-           'banking': self.banking = banking,
-           'bonus': self.bonus = bonus,
-           'status': self.status = status,
-           'contract': self.contract =  contract,
-           'stands': self.stands = stands,
-           'a_stands': self.a_stands = a_stands,
-           'a_bikes': self.a_bikes = a_bikes,
-           'timestamp': self.timestamp = timestamp
+           'number': self.number,
+           'street': self.street,
+           'address': self.address,
+           'lat': self.lat,
+           'lng': self.lng,
+           'banking': self.banking,
+           'bonus': self.bonus,
+           'status': self.status,
+           'contract': self.contract,
+           'stands': self.stands,
+           'a_stands': self.a_stands,
+           'a_bikes': self.a_bikes,
+           'timestamp': self.timestamp
        }
