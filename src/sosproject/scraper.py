@@ -50,6 +50,7 @@ def sqlWrite():
     print("Inserting",lines,"lines into table")
 
 def main():
+
     while True:
         try:
             scraper()
@@ -62,7 +63,7 @@ def main():
         except Exception:
             print("Error in inserting data")
             traceback.print_exc()
-        time.sleep(300)
+        time.sleep(600)
 
 if __name__ == "__main__":
     main()
