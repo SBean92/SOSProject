@@ -33,6 +33,7 @@ def scraper():
     #d['last_update'] = 12
     response = requests.get("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=cf7b17e2c126f2e1998430272919516c5acb5538")
     data = response.json()
+    print(data)
 
     for i in data:
         mylist=[]
