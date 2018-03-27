@@ -11,7 +11,7 @@ import time
 import os
 import MySQLdb
 import traceback
-#from collections import OrderedDict
+from collections import OrderedDict
 
 def scraper():
     try:
@@ -32,7 +32,7 @@ def scraper():
     #d['available_bikes'] = 11
     #d['last_update'] = 12
     response = requests.get("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=cf7b17e2c126f2e1998430272919516c5acb5538")
-    data = response.json()
+    data = response.json(object_pairs_hook=OrderedDict)
     print(data)
 
     for i in data:
