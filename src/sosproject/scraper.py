@@ -10,6 +10,7 @@ import csv
 import time
 import os
 import MySQLdb
+import traceback
 #from collections import OrderedDict
 
 def scraper():
@@ -64,12 +65,15 @@ def main():
     while True:
         try:
             scraper()
-        except:
+        except Exception:
             print("Error in getting data")
+            traceback.print_exc()
+            
         try:
             sqlWrite()
-        except:
+        except Exception:
             print("Error in inserting data")
+            traceback.print_exc()
         time.sleep(300)
 
 if __name__ == "__main__":
