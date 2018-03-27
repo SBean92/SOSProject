@@ -1,5 +1,5 @@
 CREATE TABLE bike (
-    number int(20),
+    number int(20) NOT NULL,
     street varchar(50),
     address varchar(50),
     lat float,
@@ -11,5 +11,6 @@ CREATE TABLE bike (
     stands int(3),
     a_stands int(3),
     a_bikes int(3),
-    timestamp bigint(20)
+    timestamp bigint(20) NOT NULL,
+    CONSTRAINT PK_bike PRIMARY KEY (number,timestamp)
 );
