@@ -16,23 +16,31 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-class BikeData(db.Model):
-    __tablename__ = 'bike'
+class StaticBikeData(db.Model):
+    __tablename__ = 'bike_static'
     number = db.Column('number', db.Integer, primary_key = True)
+    contract = db.Column('contract', db.Unicode)
     street = db.Column('street', db.Unicode)
     address = db.Column('address', db.Unicode)
     lat = db.Column('lat', db.Float)
     lng = db.Column('lng', db.Float)
+    
+class DynamicBikeData(db.Model):
+    __tablename__ = 'bike'
+    number = db.Column('number', db.Integer, primary_key = True)
     banking = db.Column('banking', db.Unicode)
     bonus = db.Column('bonus', db.Unicode)
     status = db.Column('status', db.Unicode)
-    contract = db.Column('contract', db.Unicode)
     stands = db.Column('stands', db.Integer)
     a_stands = db.Column('a_stands', db.Integer)
     a_bikes = db.Column('a_bikes', db.Integer)
     timestamp = db.Column('timestamp', db.BigInteger, primary_key = True)
     
-class BikeSchema(ma.ModelSchema):
+class StaticBikeSchema(ma.ModelSchema):
     class Meta:
-        model = BikeData
+        model = StaticBikeData
+        
+class DynamicBikeSchema(ma.ModelSchema):
+    class Meta:
+        model = DynamicBikeData
         
