@@ -17,16 +17,17 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 
-def display():
-    returnDict = {}
+def static():
     static_bike_data = StaticBikeData.query.all()
-    dynamic_bike_data = DynamicBikeData.query.all()
     static_bike_schema = StaticBikeSchema(many=True)
-    dynamic_bike_schema = DynamicBikeSchema(many=True)
     static_output = static_bike_schema.dump(static_bike_data).data
+    return jsonify(static_output)
+
+def dynamic():
+    dynamic_bike_data = DynamicBikeData.query.all()
+    dynamic_bike_schema = DynamicBikeSchema(many=True)
     dynamic_output = dynamic_bike_schema.dump(dynamic_bike_data).data
-    returnDict['Output'] = jsonify(static_output)
-    return render_template("index.html", **returnDict)
+    return jsonify(dynamic_output)
 
 if __name__ == "__main__":
     app.run(debug=True)
