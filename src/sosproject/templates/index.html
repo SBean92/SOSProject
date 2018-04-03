@@ -16,14 +16,17 @@
     }
 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 var testinfo = '<h1>Smithfield North</h1> <h2>Station Number: 42</h2>' +
-                '<div><b>Available Bikes</b>27/30</div>'
+                '<div><b>Available Bikes</b>27/30</div>';
 var testInfoWindow = new google.maps.InfoWindow({
-    content: 
+    content: testinfo
 });
 var testMarker = new google.maps.Marker({
     position: {lat:53.349562,lng:-6.278198},
     map: map,
     title: '42: Smithfield North'
+  });
+  testMarker.addListener('click', function() {
+    testInfoWindow.open(map, testMarker);
   });
 }
 </script>
