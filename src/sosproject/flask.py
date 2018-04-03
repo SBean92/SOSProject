@@ -3,7 +3,7 @@ Created on 20 Mar 2018
 
 @author: shane, sean, oz
 '''
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dbmodel.main import StaticBikeData, DynamicBikeData, StaticBikeSchema, DynamicBikeSchema
 import pymysql
@@ -18,13 +18,15 @@ db = SQLAlchemy(app)
 @app.route('/')
 
 def display():
+    returnDict = {}
     static_bike_data = StaticBikeData.query.all()
     dynamic_bike_data = DynamicBikeData.query.all()
     static_bike_schema = StaticBikeSchema(many=True)
     dynamic_bike_schema = DynamicBikeSchema(many=True)
     static_output = static_bike_schema.dump(static_bike_data).data
     dynamic_output = dynamic_bike_schema.dump(dynamic_bike_data).data
-    return jsonify(static_output[0])
+    returnDict['Output'] = jsonify(static_output)
+    return render_template("index.html", **returnDict)
 
 if __name__ == "__main__":
     app.run(debug=True)
