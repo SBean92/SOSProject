@@ -5,7 +5,8 @@
 <body>
     <h1>Dublin</h1>
     <div id="map" style="width:800px;height:800px"></div>
-    <div>{{ display }}</div>
+    <div></div>
+    <div style="position:absolute;right:5%;top:10%;"><select name='Station List'><option>42:Smithfield North</option></select>></div>
 </body>
 <script>
     function myMap() {
@@ -15,8 +16,12 @@
         mapTypeId: google.maps.MapTypeId.roadmap
     }
 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+ 
+var data = JSON.parse('{{ Output }}');
+
 var testinfo = '<h1>Smithfield North</h1> <h2>Station Number: 42</h2>' +
-                '<div><b>Available Bikes</b>27/30</div>';
+                '<div><b>Available Bikes</b> 27/30</div>' +
+                '<button>More Info</button>';
 var testInfoWindow = new google.maps.InfoWindow({
     content: testinfo
 });
