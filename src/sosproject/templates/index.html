@@ -1,0 +1,32 @@
+<html>
+<head>
+
+</head>
+<body>
+    <h1>Dublin</h1>
+    <div id="map" style="width:800px;height:800px"></div>
+    <div>{{ display }}</div>
+</body>
+<script>
+    function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(53.347521, -6.259077),
+        zoom: 13,
+        mapTypeId: google.maps.MapTypeId.roadmap
+    }
+var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+var testinfo = '<h1>Smithfield North</h1> <h2>Station Number: 42</h2>' +
+                '<div><b>Available Bikes</b>27/30</div>'
+var testInfoWindow = new google.maps.InfoWindow({
+    content: 
+});
+var testMarker = new google.maps.Marker({
+    position: {lat:53.349562,lng:-6.278198},
+    map: map,
+    title: '42: Smithfield North'
+  });
+}
+</script>
+<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3UCB640zi7tQblqiBA0JhFN0g057f81I&callback=myMap">
+</script>
+</html>
