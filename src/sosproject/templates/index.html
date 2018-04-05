@@ -8,34 +8,26 @@
 <script>
     function myMap() {
     var mapOptions = {
-        center: new google.maps.LatLng(53.347521, -6.259077),
-        zoom: 14.25,
+        center: new google.maps.LatLng(53.346521, -6.259077),
+        zoom: 14.175,
         mapTypeId: google.maps.MapTypeId.roadmap
     };
 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-function newMarkers(root1){
-    var xmlreq = new XMLHttpRequest;
-        var url = "root1.json";
-        xmlreq.onreadystatechange = function(){
-        if(xmlreq.readyState == 4 && xmlreq.status == 200){
-            var parsedData = JSON.parse(xmlreq.responseText);
-            newMarkers(parsedData);
+function newMarkers(data){
+    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root1", function(root1){
+        var stations = root1.root1;
+        console.log(stations);
+        for (i in stations) {
+            var lati = stations[i].lat;
+            var long = stations[i].lng;
+            var name = stations[i].address;
+            var marker = new google.maps.Marker({
+            position: {lat: lati, lng: long},
+            title: name
+            });
+            marker.setMap(map);
         }
-    };
-    xmlreq.open("GET", url, true);
-    xmlreq.send();
-    var stations = root1;
-    console.log(stations);
-    for (i in stations) {
-        var lati = stations[i].lat;
-        var long = stations[i].lng;
-        var name = stations[i].address;
-        var marker = new google.maps.Marker({
-        position: {lat: lati, lng: long},
-        title: name
-        });
-        marker.setMap(map);
-    }
+});
 }
 newMarkers();
 }
