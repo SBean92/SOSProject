@@ -1,9 +1,42 @@
 <html>
+<style>
+    #head{
+        background-color: darkcyan;
+        height: 5%;
+        width: 100%;
+    }
+
+    #chartH{
+        width: 500;
+        text-align:center;
+        position: absolute;
+        bottom: 0%;
+        left: 7.5%;
+        background-color: darkcyan;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        transition: 0.5s;
+    }
+
+    #chartB{
+        position: absolute;
+        bottom: 0%;
+        left: 7.5%;
+        background-color: darkcyan;
+    }
+    .chart{
+        transition: 0.5s;
+        height: 0;
+    }
+</style>
 <head>
 
 </head>
 <body>
-    <div id="map" style="width:100%;height:100%"></div>
+    <div id=head><center>Delciously Witty Title for our map thang</center></div>
+    <div id="map" style="width:100%;height:95%"></div>
+    <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
+    <div id="chartB" class="chart"></div>
 </body>
 <script>
     function myMap() {
@@ -12,37 +45,73 @@
         zoom: 14.175,
         mapTypeId: google.maps.MapTypeId.roadmap
     };
-var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-function newMarkers(data){
-    $.getJSON("root1.json", function(root1){
-        var stations = root1.root1;
-        console.log(stations);
-        for (i in stations) {
-            var lati = stations[i].lat;
-            var long = stations[i].lng;
-            var name = stations[i].address;
-            var number = stations[i].number;
-            var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
-                        "<div><b>Bikes:</b> ?/?</div>";
-            var infoWindow = new google.maps.InfoWindow({});
-            var marker = new google.maps.Marker({
-                position: {lat: lati, lng: long},
-                title: name
-            });
-            marker.content = info;
-            marker.addListener('click', function() {
-                infoWindow.setContent(this.content)
-                infoWindow.open(map, this);
-            });
-            console.log(marker)
-            marker.setMap(map);
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    function newMarkers(data){
+        $.getJSON("root1.json", function(root1){
+            var stations = root1.root1;
+            for (i in stations) {
+                var lati = stations[i].lat;
+                var long = stations[i].lng;
+                var name = stations[i].address;
+                var number = stations[i].number;
+                var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
+                            "<div><b>Bikes:</b> ?/?</div>";
+                var infoWindow = new google.maps.InfoWindow({});
+                var marker = new google.maps.Marker({
+                    position: {lat: lati, lng: long},
+                    title: name
+                });
+                marker.content = info;
+                marker.addListener('click', function() {
+                    infoWindow.setContent(this.content)
+                    infoWindow.open(map, this);
+                });
+                marker.setMap(map);
+            }
+    });
+    }
+    newMarkers();
+}
+    var showGraph = false;
+    function showHide() {
+        if (showGraph == false){
+            document.getElementById('chartB').style.height = "300px";
+            document.getElementById('chartH').style.height = "320px";
+            document.getElementById('chartH').innerHTML = "&#9776; Hide Graph";
+            showGraph = true;
+        } else {
+            document.getElementById('chartB').style.height = "0px";
+            document.getElementById('chartH').style.height = "Initial";
+            document.getElementById('chartH').innerHTML = "&#9776; Show Graph";
+            showGraph =false;
         }
-});
-}
-newMarkers();
-}
+    }
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3UCB640zi7tQblqiBA0JhFN0g057f81I&callback=myMap"></script>
+<script src = "https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart(){
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Mushrooms', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2]
+        ]);
+        var options = {'title':'How Much Pizza I Ate Last Night',
+                       'width':500,
+                       'height':300,
+                       'backgroundColor':'darkcyan'};
+        var chart = new google.visualization.ColumnChart(document.getElementById('chartB'));
+        chart.draw(data, options);
+    }
+</script>
 </html>
