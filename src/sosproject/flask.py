@@ -34,7 +34,7 @@ def display2():
 @app.route('/root3')
 
 def display3():
-    live_bike_data = db.engine.execute('SELECT number, LatestUpdate, banking, b$
+    live_bike_data = db.engine.execute('SELECT number, LatestUpdate, banking, bonus, status, stands, a_stands, a_bikes FROM(SELECT * FROM bike INNER JOIN (SELECT MAX(timestamp) AS LatestUpdate, number AS number2 FROM bike GROUP BY number2) SubMax ON bike.timestamp = SubMax.LatestUpdate and bike.number = SubMax.number2)bikeLatest;')
     live_bike_schema = DynamicBikeSchema(many=True)
     live_output = live_bike_schema.dump(live_bike_data).data
     return jsonify(root3=live_output)
