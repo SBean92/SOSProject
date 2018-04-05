@@ -31,6 +31,14 @@ def display2():
     dynamic_output = dynamic_bike_schema.dump(dynamic_bike_data).data
     return jsonify(dynamic_output)
 
+@app.route('/root3')
+
+def display3():
+    live_bike_data = db.engine.execute('SELECT number, LatestUpdate, banking, b$
+    live_bike_schema = DynamicBikeSchema(many=True)
+    live_output = live_bike_schema.dump(live_bike_data).data
+    return jsonify(root3=live_output)
+
 if __name__ == "__main__":
     app.run(debug=True)
     
