@@ -15,15 +15,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sos:ozflanagan1@sos-database.cv
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
-@app.route('/')
+@app.route('/root1')
 
-def static():
+def display1():
     static_bike_data = StaticBikeData.query.all()
     static_bike_schema = StaticBikeSchema(many=True)
     static_output = static_bike_schema.dump(static_bike_data).data
     return jsonify(static_output)
 
-def dynamic():
+@app.route('/root2')
+
+def display2():
     dynamic_bike_data = DynamicBikeData.query.all()
     dynamic_bike_schema = DynamicBikeSchema(many=True)
     dynamic_output = dynamic_bike_schema.dump(dynamic_bike_data).data
