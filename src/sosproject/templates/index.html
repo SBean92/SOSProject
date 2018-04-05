@@ -15,7 +15,7 @@
         background-color: darkcyan;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
-        transition: 0.5s;
+        transition-duration: 0.5s;
     }
 
     #chartB{
@@ -47,7 +47,14 @@
     };
 
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
+    standInfo = null;
+    function availableBikes(data){
+        $.getJSON("root3.json", function(root3){
+           standInfo = root3.root3;
+           console.log(standInfo);
+        })
+    }
+    availableBikes();
     function newMarkers(data){
         $.getJSON("root1.json", function(root1){
             var stations = root1.root1;
@@ -56,8 +63,10 @@
                 var long = stations[i].lng;
                 var name = stations[i].address;
                 var number = stations[i].number;
+                var bikes = standInfo[i].a_bikes;
+                var stands = standInfo[i].stands;
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
-                            "<div><b>Bikes:</b> ?/?</div>";
+                            "<div><b>Bikes:</b> "+stands+"/"+bikes+"</div>";
                 var infoWindow = new google.maps.InfoWindow({});
                 var marker = new google.maps.Marker({
                     position: {lat: lati, lng: long},
