@@ -13,18 +13,29 @@
         mapTypeId: google.maps.MapTypeId.roadmap
     };
 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
 function newMarkers(data){
-    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root1", function(root1){
+    $.getJSON("root1.json", function(root1){
         var stations = root1.root1;
         console.log(stations);
         for (i in stations) {
             var lati = stations[i].lat;
             var long = stations[i].lng;
             var name = stations[i].address;
+            var number = stations[i].number;
+            var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
+                        "<div><b>Bikes:</b> ?/?</div>";
+            var infoWindow = new google.maps.InfoWindow({});
             var marker = new google.maps.Marker({
-            position: {lat: lati, lng: long},
-            title: name
+                position: {lat: lati, lng: long},
+                title: name
             });
+            marker.content = info;
+            marker.addListener('click', function() {
+                infoWindow.setContent(this.content)
+                infoWindow.open(map, this);
+            });
+            console.log(marker)
             marker.setMap(map);
         }
 });
