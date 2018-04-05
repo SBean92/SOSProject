@@ -3,40 +3,43 @@
 
 </head>
 <body>
-    <h1>Dublin</h1>
-    <div id="map" style="width:800px;height:800px"></div>
-    <div></div>
-    <div style="position:absolute;right:5%;top:10%;"><select name='Station List'><option>42:Smithfield North</option></select>></div>
+    <div id="map" style="width:100%;height:100%"></div>
 </body>
 <script>
     function myMap() {
     var mapOptions = {
         center: new google.maps.LatLng(53.347521, -6.259077),
-        zoom: 13,
+        zoom: 14.25,
         mapTypeId: google.maps.MapTypeId.roadmap
-    }
+    };
 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
- 
-var data = JSON.parse('{{ Output }}');
-
-console.log(data);
-
-var testinfo = '<h1>Smithfield North</h1> <h2>Station Number: 42</h2>' +
-                '<div><b>Available Bikes</b> 27/30</div>' +
-                '<button>More Info</button>';
-var testInfoWindow = new google.maps.InfoWindow({
-    content: testinfo
-});
-var testMarker = new google.maps.Marker({
-    position: {lat:53.349562,lng:-6.278198},
-    map: map,
-    title: '42: Smithfield North'
-  });
-  testMarker.addListener('click', function() {
-    testInfoWindow.open(map, testMarker);
-  });
+function newMarkers(root1){
+    var xmlreq = new XMLHttpRequest;
+        var url = "root1.json";
+        xmlreq.onreadystatechange = function(){
+        if(xmlreq.readyState == 4 && xmlreq.status == 200){
+            var parsedData = JSON.parse(xmlreq.responseText);
+            newMarkers(parsedData);
+        }
+    };
+    xmlreq.open("GET", url, true);
+    xmlreq.send();
+    var stations = root1;
+    console.log(stations);
+    for (i in stations) {
+        var lati = stations[i].lat;
+        var long = stations[i].lng;
+        var name = stations[i].address;
+        var marker = new google.maps.Marker({
+        position: {lat: lati, lng: long},
+        title: name
+        });
+        marker.setMap(map);
+    }
+}
+newMarkers();
 }
 </script>
-<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3UCB640zi7tQblqiBA0JhFN0g057f81I&callback=myMap">
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3UCB640zi7tQblqiBA0JhFN0g057f81I&callback=myMap"></script>
 </html>
