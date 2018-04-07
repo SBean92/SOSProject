@@ -36,6 +36,14 @@ class DynamicBikeData(db.Model):
     a_bikes = db.Column('a_bikes', db.Integer)
     timestamp = db.Column('timestamp', db.BigInteger, primary_key = True)
     
+class AvgBikeData(db.Model):
+    __tablename__ = 'averages'
+    index = db.Column('index', db.Integer, primary_key = True)
+    number = db.Column('number', db.Integer)
+    weekday = db.Column('weekday', db.Unicode)
+    a_bikes = db.Column('a_stands', db.Integer)
+    a_stands = db.Column('a_bikes', db.Integer)
+    
 class StaticBikeSchema(ma.ModelSchema):
     class Meta:
         model = StaticBikeData
@@ -43,4 +51,8 @@ class StaticBikeSchema(ma.ModelSchema):
 class DynamicBikeSchema(ma.ModelSchema):
     class Meta:
         model = DynamicBikeData
+        
+class AvgBikeSchema(ma.ModelSchema):
+    class Meta:
+        model = AvgBikeData
         

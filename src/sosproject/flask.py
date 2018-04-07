@@ -5,7 +5,7 @@ Created on 20 Mar 2018
 '''
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from dbmodel.main import StaticBikeData, DynamicBikeData, StaticBikeSchema, DynamicBikeSchema
+from dbmodel.main import StaticBikeData, DynamicBikeData, StaticBikeSchema, DynamicBikeSchema, AvgBikeData, AvgBikeSchema
 import pymysql
 pymysql.install_as_MySQLdb()
 from flask.json import jsonify
@@ -38,6 +38,14 @@ def display3():
     live_bike_schema = DynamicBikeSchema(many=True)
     live_output = live_bike_schema.dump(live_bike_data).data
     return jsonify(root3=live_output)
+
+@app.route('/root4')
+
+def display4():
+    avg_bike_data = AvgBikeData.query.all()
+    avg_bike_schema = AvgBikeSchema(many=True)
+    avg_output = avg_bike_schema.dump(avg_bike_data).data
+    return jsonify(root4=avg_output)
 
 if __name__ == "__main__":
     app.run(debug=True)
