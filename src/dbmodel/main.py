@@ -41,6 +41,7 @@ class AvgBikeData(db.Model):
     index = db.Column('index', db.Integer, primary_key = True)
     number = db.Column('number', db.Integer)
     weekday = db.Column('weekday', db.Unicode)
+    hour = db.Column('hour', db.Integer)
     a_bikes = db.Column('a_stands', db.Integer)
     a_stands = db.Column('a_bikes', db.Integer)
     
