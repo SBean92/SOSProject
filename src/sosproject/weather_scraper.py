@@ -12,7 +12,7 @@ with open('data.txt', 'w') as outfile:
 
 
 #Just reading in from here so I don't get kicked off the API
-
+#this can be deleted as soon as it all works
 with open('data.txt') as json_data:
     weather = json.load(json_data)
 
