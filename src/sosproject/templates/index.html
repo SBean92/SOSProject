@@ -1,3 +1,4 @@
+
 <html>
 <style>
     #head{
@@ -7,12 +8,14 @@
     }
 
     #chartH{
-        width: 500;
+        width: 700;
+        height: 300;
         text-align:center;
         position: absolute;
         bottom: 0%;
         left: 7.5%;
-        background-color: darkcyan;
+        background-color: white;
+        border-color: darkcyan;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
         transition-duration: 0.5s;
@@ -33,10 +36,12 @@
 
 </head>
 <body>
-    <div id=head><center>Delciously Witty Title for our map thang</center></div>
+    <div id=head><center>Deliciously Witty Title for our map thang</center></div>
     <div id="map" style="width:100%;height:95%"></div>
     <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
-    <div id="chartB" class="chart"></div>
+    <div id="chartB" class="chart">
+    <canvas id="lineChart" height="300" width="700"></canvas>
+    </div>
 </body>
 <script>
     function myMap() {
@@ -49,14 +54,14 @@
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
     standInfo = null;
     function availableBikes(data){
-        $.getJSON("root3.json", function(root3){
+        $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root3", function(root3){
            standInfo = root3.root3;
            console.log(standInfo);
         })
     }
     availableBikes();
     function newMarkers(data){
-        $.getJSON("root1.json", function(root1){
+        $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root1", function(root1){
             var stations = root1.root1;
             for (i in stations) {
                 var lati = stations[i].lat;
@@ -66,7 +71,8 @@
                 var bikes = standInfo[i].a_bikes;
                 var stands = standInfo[i].stands;
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
-                            "<div><b>Bikes:</b> "+stands+"/"+bikes+"</div>";
+                            "<div><b>Available bikes: </b>"+bikes+"</div>"+
+                            "<div><b>Available stands: </b>"+stands+"</div>";
                 var infoWindow = new google.maps.InfoWindow({});
                 var marker = new google.maps.Marker({
                     position: {lat: lati, lng: long},
@@ -100,27 +106,62 @@
 </script>
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3UCB640zi7tQblqiBA0JhFN0g057f81I&callback=myMap"></script>
-<script src = "https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart(){
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
-        ]);
-        var options = {'title':'How Much Pizza I Ate Last Night',
-                       'width':500,
-                       'height':300,
-                       'backgroundColor':'darkcyan'};
-        var chart = new google.visualization.ColumnChart(document.getElementById('chartB'));
-        chart.draw(data, options);
+    function avgBikes(data){
+
     }
+    avgBikes();
+    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root4", function(root4){
+           avgInfo = root4.root4;
+           var ava_bikes =[];
+   var ava_stands = [];
+   var time = [];
+   var x = 0;
+while (x <= 23) {
+for (i in avgInfo){
+    var y = 0;
+    var ystr = x.toString();
+   if (avgInfo[i].number == "1" && avgInfo[i].weekday == "Monday" && avgInfo[i].hour == ystr){
+    ava_bikes.push(avgInfo[i].a_bikes);
+    ava_stands.push(avgInfo[i].a_stands);
+       }
+    y++;
+       }
+    x++;
+}
+        console.log(ava_bikes);
+        console.log(ava_stands);
+
+const CHART = document.getElementById("lineChart");
+let lineChart = new Chart(CHART, {
+ type: 'line',
+    data: {
+    labels: ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"],
+    datasets: [{ 
+        data: ava_bikes,
+        label: "Average free bikes",
+        borderColor: "#3e95cd",
+        fill: false
+      },
+    { 
+        data: ava_stands,
+        label: "Average free stands",
+        borderColor: "#8e5ea2",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+          ticks: {
+              beginAtZero: true
+          }
+      }]
+  }
+  }
+});
+ });   
 </script>
 </html>
