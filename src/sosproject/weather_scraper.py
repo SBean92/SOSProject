@@ -45,7 +45,7 @@ def daily_scraper():
     #Appends date, raining yes/no and overall description to list
     for i in weather_forecast:
         weather_list=[]
-        weather_list.append(i['dt_txt'])
+        weather_list.append(i['dt'])
         is_raining= (i['weather'][0]['id'])
         if is_raining in rain_codes:
             weather_list.append(1)
@@ -62,7 +62,7 @@ def daily_scraper():
             
 def hourly_weather_scraper():
     try:
-        os.remove('hourly_weatherpip.csv')
+        os.remove('hourly_weather.csv')
     except OSError:
         pass
     #Read in weather info and put into JSON Dump. Currently only doing it once
@@ -109,15 +109,18 @@ def createWeatherTable(table):
     conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()    
     if table == 'hourly':
-        cursor.execute('CREATE TABLE hourly_weather (timestamp int(50) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
+        cursor.execute('CREATE TABLE hourly_weather (timestamp varchar(50) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
         conn.commit()
     elif table == 'daily':
-        cursor.execute('CREATE TABLE daily_weather(timestamp int(50) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_daily PRIMARY KEY (timestamp))')
+        cursor.execute('CREATE TABLE daily_weather(timestamp varchar(50) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_daily PRIMARY KEY (timestamp))')
         conn.commit()
     cursor.close()
 
 def sqlWriteWeather(table):
-    conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    try:
+        conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    except:
+        print("Problem connecting to the database")
     cursor = conn.cursor()
     if table == 'hourly':
         lines = 0
