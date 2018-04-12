@@ -7,19 +7,23 @@ import os
 import traceback
 
 def daily_scraper():
+    try:
+        os.remove('daily_weather.csv')
+    except OSError:
+        pass
     #Read in weather info and put into JSON Dump. Currently only doing it once
     #This is for the whole day and is a forecast. Will only keep current day then overwrite on next access
-    '''response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
-    weather = response.json()
-    with open('weather_data.txt', 'w') as outfile:
+    response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
+    weather_forecast = response.json()
+    """with open('weather_data.txt', 'w') as outfile:
         json.dump(weather, outfile, sort_keys = True, indent = 4,
-                   ensure_ascii = False)'''
+                   ensure_ascii = False)
     
     
     #Just reading in from here so I don't get kicked off the API
     #this can be deleted as soon as it all works
     with open('weather_data.txt') as json_data:
-        weather_forecast = json.load(json_data)
+        weather_forecast = json.load(json_data)"""
     
     
     #Regardless of whether current/ forecast this will be same
@@ -48,27 +52,27 @@ def daily_scraper():
         print(weather_list)
         
     #need a way to put list into DB for weather
-                     
-            
-    
-    
-    """for key, value in i.items():  
+         
         with open(r"daily_weather.csv", 'a') as csvfile:
             weather_writer = csv.writer(csvfile, lineterminator = '\n')
-            weather_writer.writerow(weather_list)"""
+            weather_writer.writerow(weather_list)
             
 def hourly_weather_scraper():
+    try:
+        os.remove('hourly_weather.csv')
+    except OSError:
+        pass
     #Read in weather info and put into JSON Dump. Currently only doing it once
     #This is current data, this will be constantly stored in the db
-    """response = requests.get("http://api.openweathermap.org/data/2.5/weather?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
+    response = requests.get("http://api.openweathermap.org/data/2.5/weather?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
     weather = response.json()
-    with open('data.txt', 'w') as outfile:
+    """with open('data.txt', 'w') as outfile:
         json.dump(weather, outfile, sort_keys = True, indent = 4,
-                   ensure_ascii = False)"""
+                   ensure_ascii = False)
     
     #Just reading in from here so I don't get kicked off the API
     with open('data.txt') as json_data:
-        weather = json.load(json_data)
+        weather = json.load(json_data)"""
     
     
     #Regardless of whether current/ forecast this will be same
@@ -90,15 +94,9 @@ def hourly_weather_scraper():
         weather_list.append(0)
     weather_list.append(weather['weather'][0]['description'])
     
-    #print(weather_list)
-    
-        
-    #need a way to put list into DB for weather
-   
-    """for key, value in i.items():  
-        with open(r"hourly_weather.csv", 'a') as csvfile:
-            weather_writer = csv.writer(csvfile, lineterminator = '\n')
-            weather_writer.writerow(weather_list)"""
+    with open(r"hourly_weather.csv", 'a') as csvfile:
+        weather_writer = csv.writer(csvfile, lineterminator = '\n')
+        weather_writer.writerow(weather_list)
 
 def createWeatherTable(table):
     conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
