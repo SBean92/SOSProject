@@ -43,6 +43,15 @@
     <div id="map" style="width:100%;height:95%"></div>
     <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
     <div id="chartB" class="chart">
+    <div><select id="daySelect">
+  <option value="Monday">Monday
+  <option value="Tuesday">Tuesday
+  <option value="Wednesday">Wednesday
+  <option value="Thursday">Thursday
+  <option value="Friday">Friday
+  <option value="Saturday">Saturday
+  <option value="Sunday">Sunday
+</select></div>
     <canvas id="lineChart"></canvas>
     </div>
 </body>
@@ -76,7 +85,7 @@
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
                             "<div><b>Available bikes: </b>"+bikes+"</div>"+
                             "<div><b>Available stands: </b>"+stands+"</div>" +
-                    "<div><button onclick='avgBikes("+number+")'>Show me avgs</button></div>";
+                    "<div><button onclick='avgBikes("+number+")'>Show chart averages</button></div>";
                 var infoWindow = new google.maps.InfoWindow({});
                 var marker = new google.maps.Marker({
                     position: {lat: lati, lng: long},
@@ -120,12 +129,12 @@
    var ava_stands = [];
    var time = [];
    var x = 0;
-avgInfo[i].number
+   var day = document.getElementById("daySelect").value;
 while (x <= 23) {
 for (i in avgInfo){
     var y = 0;
     var ystr = x.toString();
-   if (avgInfo[i].number == num && avgInfo[i].weekday == "Monday" && avgInfo[i].hour == ystr){
+   if (avgInfo[i].number == num && avgInfo[i].weekday == day && avgInfo[i].hour == ystr){
     ava_bikes.push(avgInfo[i].a_bikes);
     ava_stands.push(avgInfo[i].a_stands);
        }
@@ -133,7 +142,6 @@ for (i in avgInfo){
        }
     x++;
 }
-
 const CHART = document.getElementById("lineChart");
 let lineChart = new Chart(CHART, {
  type: 'line',
@@ -156,7 +164,7 @@ let lineChart = new Chart(CHART, {
   options: {
     title: {
       display: true,
-      text: 'Daily averages for: ' + names[numint],
+      text: names[numint] + ': '+ day,
     },
     scales: {
       yAxes: [{
