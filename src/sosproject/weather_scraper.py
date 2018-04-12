@@ -1,6 +1,6 @@
 import requests
 import json
-import MySQLdb
+import pymysql
 import csv
 import time
 import os
