@@ -4,16 +4,16 @@ import json
 
 #Read in weather info and put into JSON Dump. Currently only doing it once
 #This is for the whole day, can change this to current if we need, not much difference
-"""response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
+'''response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
 weather = response.json()
-with open('data.txt', 'w') as outfile:
+with open('weather_data.txt', 'w') as outfile:
     json.dump(weather, outfile, sort_keys = True, indent = 4,
-               ensure_ascii = False)"""
+               ensure_ascii = False)'''
 
 
 #Just reading in from here so I don't get kicked off the API
 #this can be deleted as soon as it all works
-with open('data.txt') as json_data:
+with open('weather_data.txt') as json_data:
     weather = json.load(json_data)
 
 
