@@ -1,4 +1,4 @@
-from jsonschema.validators import requests
+import requests
 import json
 import MySQLdb
 import csv
@@ -59,7 +59,7 @@ def daily_scraper():
             
 def hourly_weather_scraper():
     try:
-        os.remove('hourly_weather.csv')
+        os.remove('hourly_weatherpip.csv')
     except OSError:
         pass
     #Read in weather info and put into JSON Dump. Currently only doing it once
