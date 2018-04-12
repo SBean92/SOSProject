@@ -178,7 +178,7 @@ def main():
             pass
         else:
             createWeatherTable("hourly")
-        for x in range(0,23):
+        for x in range(0,47):
             try:
                 hourly_weather_scraper()
             except Exception:
@@ -187,7 +187,7 @@ def main():
                 sqlWriteWeather("hourly")
             except Exception:
                 print("Error in inserting hourly data")
-            time.sleep(660)
+            time.sleep(1800)
 
 if __name__ == "__main__":
     main()
