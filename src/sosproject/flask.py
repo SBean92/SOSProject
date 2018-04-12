@@ -5,7 +5,7 @@ Created on 20 Mar 2018
 '''
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from dbmodel.main import StaticBikeData, DynamicBikeData, StaticBikeSchema, DynamicBikeSchema, AvgBikeData, AvgBikeSchema
+from dbmodel.main import StaticBikeData, DynamicBikeData, StaticBikeSchema, DynamicBikeSchema, AvgBikeData, AvgBikeSchema, DailyWeatherData, DailyWeatherSchema, HourlyWeatherData, HourlyWeatherSchema
 import pymysql
 pymysql.install_as_MySQLdb()
 from flask.json import jsonify
@@ -46,6 +46,22 @@ def display4():
     avg_bike_schema = AvgBikeSchema(many=True)
     avg_output = avg_bike_schema.dump(avg_bike_data).data
     return jsonify(root4=avg_output)
+
+@app.route('/root5')
+
+def display5():
+    daily_weather_data = DailyWeatherData.query.all()
+    daily_weather_schema = DailyWeatherSchema(many=True)
+    daily_weather_output = daily_weather_schema.dump(daily_weather_data).data
+    return jsonify(root5=daily_weather_output)
+
+@app.route('/root6')
+
+def display6():
+    hourly_weather_data = HourlyWeatherData.query.all()
+    hourly_weather_schema = HourlyWeatherSchema(many=True)
+    hourly_weather_output = hourly_weather_schema.dump(hourly_weather_data).data
+    return jsonify(root6=hourly_weather_output)
 
 if __name__ == "__main__":
     app.run(debug=True)

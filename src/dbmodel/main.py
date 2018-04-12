@@ -44,7 +44,19 @@ class AvgBikeData(db.Model):
     hour = db.Column('hour', db.Integer)
     a_bikes = db.Column('a_stands', db.Integer)
     a_stands = db.Column('a_bikes', db.Integer)
-    
+
+class DailyWeatherData(db.Model):
+    __tablename__ = 'daily_weather'
+    timestamp = db.Column('timestamp', db.Unicode, primary_key = True)
+    isRaining = db.Column('isRaining', db.Integer)
+    description = db.Column('description', db.Unicode)
+
+class HourlyWeatherData(db.Model):
+    __tablename__ = 'hourly_weather'
+    timestamp = db.Column('timestamp', db.Unicode, primary_key = True)
+    isRaining = db.Column('isRaining', db.Integer)
+    description = db.Column('description', db.Unicode)
+
 class StaticBikeSchema(ma.ModelSchema):
     class Meta:
         model = StaticBikeData
@@ -56,4 +68,12 @@ class DynamicBikeSchema(ma.ModelSchema):
 class AvgBikeSchema(ma.ModelSchema):
     class Meta:
         model = AvgBikeData
+
+class DailyWeatherSchema(ma.ModelSchema):
+    class Meta:
+        model = DailyWeatherData
+
+class HourlyWeatherSchema(ma.ModelSchema):
+    class Meta:
+        model = HourlyWeatherData
         
