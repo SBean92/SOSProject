@@ -109,10 +109,10 @@ def createWeatherTable(table):
     conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()    
     if table == 'hourly':
-        cursor.execute('CREATE TABLE hourly_weather (timestamp varchar(50) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
+        cursor.execute('CREATE TABLE hourly_weather (timestamp varchar(50) NOT NULL,isRaining int(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
         conn.commit()
     elif table == 'daily':
-        cursor.execute('CREATE TABLE daily_weather(timestamp varchar(50) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_daily PRIMARY KEY (timestamp))')
+        cursor.execute('CREATE TABLE daily_weather(timestamp varchar(50) NOT NULL,isRaining int(1),description varchar(150),CONSTRAINT PK_daily PRIMARY KEY (timestamp))')
         conn.commit()
     cursor.close()
 
@@ -178,7 +178,7 @@ def main():
             pass
         else:
             createWeatherTable("hourly")
-        for x in range(0,1):
+        for x in range(0,23):
             try:
                 hourly_weather_scraper()
             except Exception:
@@ -187,7 +187,7 @@ def main():
                 sqlWriteWeather("hourly")
             except Exception:
                 print("Error in inserting hourly data")
-            time.sleep(600)
+            time.sleep(660)
 
 if __name__ == "__main__":
     main()
