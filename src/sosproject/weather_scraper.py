@@ -1,5 +1,10 @@
 from jsonschema.validators import requests
 import json
+import MySQLdb
+import csv
+import time
+import os
+import traceback
 
 def daily_scraper():
     #Read in weather info and put into JSON Dump. Currently only doing it once
@@ -127,4 +132,53 @@ def sqlWriteWeather(table):
                             'VALUES(%s, %s, %s)', row)
         conn.commit()
         print("Inserting",lines,"lines into daily weather table")     
-    cursor.close()    
+    cursor.close()
+
+def tableExist(table):
+    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES LIKE'"+table+"'")
+    if cursor.fetchone():
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False
+
+def dropTable():
+    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    cursor = conn.cursor()
+    cursor.execute("DROP TABLE daily_weather")
+    cursor.close()
+
+def main():
+    while True:
+        if tableExist("daily_weather"):
+            dropTable()
+        try:
+            daily_scraper()
+        except Exception:
+            print("Error in getting daily data")
+        createWeatherTable("daily")
+        try:
+            sqlWriteWeather("daily")
+        except Exception:
+            print("Error in inserting daily data")
+
+        if tableExist("hourly_weather"):
+            pass
+        else:
+            createWeatherTable("hourly")
+        for x in range(0,11):
+            try:
+                hourly_weather_scraper()
+            except Exception:
+                print("Error in getting hourly data")
+            try:
+                sqlWriteWeather("hourly")
+            except Exception:
+                print("Error in inserting hourly data")
+            time.sleep(1800)
+
+if __name__ == "__main__":
+    main()
