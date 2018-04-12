@@ -1,7 +1,7 @@
 from jsonschema.validators import requests
 import json
 
-def forecast_scraper():
+def daily_scraper():
     #Read in weather info and put into JSON Dump. Currently only doing it once
     #This is for the whole day and is a forecast. Will only keep current day then overwrite on next access
     '''response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
@@ -48,11 +48,11 @@ def forecast_scraper():
     
     
     """for key, value in i.items():  
-        with open(r"weather.csv", 'a') as csvfile:
+        with open(r"daily_weather.csv", 'a') as csvfile:
             weather_writer = csv.writer(csvfile, lineterminator = '\n')
             weather_writer.writerow(weather_list)"""
             
-def current_scraper():
+def hourly_weather_scraper():
     #Read in weather info and put into JSON Dump. Currently only doing it once
     #This is current data, this will be constantly stored in the db
     """response = requests.get("http://api.openweathermap.org/data/2.5/weather?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
@@ -79,16 +79,52 @@ def current_scraper():
     #Appends date, raining yes/no and overall description to list
     weather_list=[]
     weather_list.append(weather['dt'])
-    weather_list.append(weather['weather'][0]['id'])
+    if weather['weather'][0]['id'] in rain_codes:
+        weather_list.append(1)
+    else:
+        weather_list.append(0)
     weather_list.append(weather['weather'][0]['description'])
     
-    print(weather_list)
+    #print(weather_list)
     
         
     #need a way to put list into DB for weather
    
     """for key, value in i.items():  
-        with open(r"weather.csv", 'a') as csvfile:
+        with open(r"hourly_weather.csv", 'a') as csvfile:
             weather_writer = csv.writer(csvfile, lineterminator = '\n')
             weather_writer.writerow(weather_list)"""
-        
+
+def createWeatherTable(table):
+    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'weatherdatabase')
+    cursor = conn.cursor()    
+    if table == 'hourly':
+        cursor.execute('CREATE TABLE hourly_weather (timestamp int(20) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
+        conn.commit()
+    elif table == 'daily':
+        cursor.execute('CREATE TABLE daily_weather(timestamp int(20) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
+        conn.commit()
+    cursor.close()
+
+def sqlWriteWeather(table):
+    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'weatherdatabase')
+    cursor = conn.cursor()
+    if table == 'hourly':
+        lines = 0
+        csv_data = csv.reader(open('hourly_weather.csv', 'r'))
+        for row in csv_data:
+            lines += 1
+            cursor.execute('INSERT INTO hourly_weather(timestamp, isRaining, description)' +
+                            'VALUES(%s, %s, %s)', row)
+        conn.commit()
+        print("Inserting",lines,"lines into hourly weather table")
+    if table == 'daily':
+        lines = 0
+        csv_data = csv.reader(open('daily_weather.csv', 'r'))
+        for row in csv_data:
+            lines += 1
+            cursor.execute('INSERT INTO daily_weather(timestamp, isRaining, description)' +
+                            'VALUES(%s, %s, %s)', row)
+        conn.commit()
+        print("Inserting",lines,"lines into daily weather table")     
+    cursor.close()    
