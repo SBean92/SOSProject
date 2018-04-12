@@ -99,7 +99,7 @@ def hourly_weather_scraper():
         weather_writer.writerow(weather_list)
 
 def createWeatherTable(table):
-    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()    
     if table == 'hourly':
         cursor.execute('CREATE TABLE hourly_weather (timestamp int(20) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
@@ -110,7 +110,7 @@ def createWeatherTable(table):
     cursor.close()
 
 def sqlWriteWeather(table):
-    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()
     if table == 'hourly':
         lines = 0
@@ -133,7 +133,7 @@ def sqlWriteWeather(table):
     cursor.close()
 
 def tableExist(table):
-    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()
     cursor.execute("SHOW TABLES LIKE'"+table+"'")
     if cursor.fetchone():
@@ -144,7 +144,7 @@ def tableExist(table):
         return False
 
 def dropTable():
-    conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()
     cursor.execute("DROP TABLE daily_weather")
     cursor.close()
