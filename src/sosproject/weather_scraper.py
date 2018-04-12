@@ -9,12 +9,15 @@ import traceback
 def daily_scraper():
     try:
         os.remove('daily_weather.csv')
-    except OSError:
+    except:
         pass
     #Read in weather info and put into JSON Dump. Currently only doing it once
     #This is for the whole day and is a forecast. Will only keep current day then overwrite on next access
-    response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
-    weather_forecast = response.json()
+    try: 
+        response = requests.get("http://api.openweathermap.org/data/2.5/forecast?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
+        weather_forecast = response.json()
+    except:
+        print("Error connecting to API")
     """with open('weather_data.txt', 'w') as outfile:
         json.dump(weather, outfile, sort_keys = True, indent = 4,
                    ensure_ascii = False)
@@ -42,14 +45,14 @@ def daily_scraper():
     #Appends date, raining yes/no and overall description to list
     for i in weather_forecast:
         weather_list=[]
-        weather_list.append(i['dt_txt'])
+        weather_list.append(i['dt'])
         is_raining= (i['weather'][0]['id'])
         if is_raining in rain_codes:
             weather_list.append(1)
         else:
             weather_list.append(0)
         weather_list.append(i['weather'][0]['description'])
-        print(weather_list)
+        print("daily",weather_list)
         
     #need a way to put list into DB for weather
          
@@ -59,13 +62,17 @@ def daily_scraper():
             
 def hourly_weather_scraper():
     try:
-        os.remove('hourly_weatherpip.csv')
+        os.remove('hourly_weather.csv')
     except OSError:
         pass
     #Read in weather info and put into JSON Dump. Currently only doing it once
     #This is current data, this will be constantly stored in the db
-    response = requests.get("http://api.openweathermap.org/data/2.5/weather?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
-    weather = response.json()
+    try:
+        response = requests.get("http://api.openweathermap.org/data/2.5/weather?id=2964574&APPID=4f2499afbefdfe83bed8ceeca402adc5")
+        weather = response.json()
+    except:
+        print("Error connecting to API")
+        
     """with open('data.txt', 'w') as outfile:
         json.dump(weather, outfile, sort_keys = True, indent = 4,
                    ensure_ascii = False)
@@ -93,7 +100,7 @@ def hourly_weather_scraper():
     else:
         weather_list.append(0)
     weather_list.append(weather['weather'][0]['description'])
-    
+    print("hourly",weather_list)
     with open(r"hourly_weather.csv", 'a') as csvfile:
         weather_writer = csv.writer(csvfile, lineterminator = '\n')
         weather_writer.writerow(weather_list)
@@ -102,15 +109,18 @@ def createWeatherTable(table):
     conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()    
     if table == 'hourly':
-        cursor.execute('CREATE TABLE hourly_weather (timestamp int(20) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
+        cursor.execute('CREATE TABLE hourly_weather (timestamp varchar(50) NOT NULL,isRaining int(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
         conn.commit()
     elif table == 'daily':
-        cursor.execute('CREATE TABLE daily_weather(timestamp int(20) NOT NULL,isRaining bit(1),description varchar(150),CONSTRAINT PK_hourly PRIMARY KEY (timestamp))')
+        cursor.execute('CREATE TABLE daily_weather(timestamp varchar(50) NOT NULL,isRaining int(1),description varchar(150),CONSTRAINT PK_daily PRIMARY KEY (timestamp))')
         conn.commit()
     cursor.close()
 
 def sqlWriteWeather(table):
-    conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    try:
+        conn = pymysql.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
+    except:
+        print("Problem connecting to the database")
     cursor = conn.cursor()
     if table == 'hourly':
         lines = 0
@@ -121,6 +131,7 @@ def sqlWriteWeather(table):
                             'VALUES(%s, %s, %s)', row)
         conn.commit()
         print("Inserting",lines,"lines into hourly weather table")
+        
     if table == 'daily':
         lines = 0
         csv_data = csv.reader(open('daily_weather.csv', 'r'))
@@ -167,7 +178,7 @@ def main():
             pass
         else:
             createWeatherTable("hourly")
-        for x in range(0,11):
+        for x in range(0,47):
             try:
                 hourly_weather_scraper()
             except Exception:
