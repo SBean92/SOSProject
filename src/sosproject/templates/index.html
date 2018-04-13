@@ -39,11 +39,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-    <div id=head><center>Where's me bleedin' bike?!?</center></div>
-    <div id="map" style="width:100%;height:95%"></div>
-    <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
-    <div id="chartB" class="chart">
-    <div><select id="daySelect">
+    <div id=head><center>Where's me bleedin' bike?!?</center><select id="daySelect">
   <option value="Monday">Monday
   <option value="Tuesday">Tuesday
   <option value="Wednesday">Wednesday
@@ -52,10 +48,13 @@
   <option value="Saturday">Saturday
   <option value="Sunday">Sunday
 </select></div>
-    <canvas id="lineChart"></canvas>
+    <div id="map" style="width:100%;height:95%"></div>
+    <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
+    <div id="chartB" class="chart">
+    <div id="graph"><div>
+</div></div>
     </div>
 </body>
-
 <script>
     function myMap() {
     var mapOptions = {
@@ -103,7 +102,8 @@
     });
     }
     newMarkers();
-}
+}   
+
     var showGraph = false;
     function showHide() {
         if (showGraph == false){
@@ -118,18 +118,16 @@
             showGraph =false;
         }
     }
-
     function avgBikes(num){
-
     $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root4", function(root4){
            avgInfo = root4.root4;
-           var ava_bikes =[];
-        var numint = parseInt(num) - 1;
-   var names = ["Clarendon Row","Blessington Street","Bolton Street","Greek Street","Charlemont Street","Christchurch Place","High Street","Custom House Quay","Exchequer Street","Dame Street","Earlsfort Terrace","Eccles Street","Fitzwilliam Square West","Fownes Street Upper","Hardwicke Street","Georges Quay","Golden Lane","Grantham Street","Herbert Place","","Leinster Street South","Townsend Street","Custom House","Cathal Brugha Street","Merrion Square East","Merrion Square West","Molesworth Street","Mountjoy Square West","Ormond Quay Upper","Parnell Square North","Parnell Street","Pearse Street","Princes Street / O'Connell Street","Portobello Harbour","Smithfield","St. Stephen's Green East","St. Stephen's Green South","Talbot Street","Wilton Terrace","Jervis Street","Harcourt Terrace","Smithfield North","Portobello Road","Upper Sherrard Street","Deverell Place","Strand Street Great","Herbert Street","Excise Walk","Guild Street","George's Lane","York Street West","York Street East","Newman House","Clonmel Street","Hatch Street","Mount Street Lower","Grattan Street","Sir Patrick's Dun","Denmark Street Great","North Circular Road","Hardwicke Place","Lime Street","Fenian Street","Sandwith Street","Convention Centre","New Central Bank","The Point","Hanover Quay","Grand Canal Dock","Barrow Street","Kevin Street","John Street West","Francis Street","Oliver Bond Street","James Street","Market Street South","Wolfe Tone Street","Mater Hospital","Eccles Street East","St James Hospital (Luas)","St. James Hospital (Central)","Mount Brown","Emmet Road","Brookfield Road","Rothe Abbey","Parkgate Street","Collins Barracks Museum","Blackhall Place","Fitzwilliam Square East","Benson Street","South Dock Road","Heuston Bridge (North)","Heuston Station (Central)","Heuston Station (Car Park)","Royal Hospital","Kilmainham Lane","Kilmainham Gaol","Frederick Street South","City Quay","Heuston Bridge (South)","King Street North","Western Way","Grangegorman Lower (South)","Grangegorman Lower (Central)","Grangegorman Lower (North)"];
-   var ava_stands = [];
-   var time = [];
-   var x = 0;
-   var day = document.getElementById("daySelect").value;
+       var ava_bikes =[];
+       var numint = parseInt(num) - 1;
+       var names = ["Clarendon Row","Blessington Street","Bolton Street","Greek Street","Charlemont Street","Christchurch Place","High Street","Custom House Quay","Exchequer Street","Dame Street","Earlsfort Terrace","Eccles Street","Fitzwilliam Square West","Fownes Street Upper","Hardwicke Street","Georges Quay","Golden Lane","Grantham Street","Herbert Place","","Leinster Street South","Townsend Street","Custom House","Cathal Brugha Street","Merrion Square East","Merrion Square West","Molesworth Street","Mountjoy Square West","Ormond Quay Upper","Parnell Square North","Parnell Street","Pearse Street","Princes Street / O'Connell Street","Portobello Harbour","Smithfield","St. Stephen's Green East","St. Stephen's Green South","Talbot Street","Wilton Terrace","Jervis Street","Harcourt Terrace","Smithfield North","Portobello Road","Upper Sherrard Street","Deverell Place","Strand Street Great","Herbert Street","Excise Walk","Guild Street","George's Lane","York Street West","York Street East","Newman House","Clonmel Street","Hatch Street","Mount Street Lower","Grattan Street","Sir Patrick's Dun","Denmark Street Great","North Circular Road","Hardwicke Place","Lime Street","Fenian Street","Sandwith Street","Convention Centre","New Central Bank","The Point","Hanover Quay","Grand Canal Dock","Barrow Street","Kevin Street","John Street West","Francis Street","Oliver Bond Street","James Street","Market Street South","Wolfe Tone Street","Mater Hospital","Eccles Street East","St James Hospital (Luas)","St. James Hospital (Central)","Mount Brown","Emmet Road","Brookfield Road","Rothe Abbey","Parkgate Street","Collins Barracks Museum","Blackhall Place","Fitzwilliam Square East","Benson Street","South Dock Road","Heuston Bridge (North)","Heuston Station (Central)","Heuston Station (Car Park)","Royal Hospital","Kilmainham Lane","Kilmainham Gaol","Frederick Street South","City Quay","Heuston Bridge (South)","King Street North","Western Way","Grangegorman Lower (South)","Grangegorman Lower (Central)","Grangegorman Lower (North)"];
+       var ava_stands = [];
+       var time = [];
+       var x = 0;
+       var day = document.getElementById("daySelect").value;
 while (x <= 23) {
 for (i in avgInfo){
     var y = 0;
@@ -142,8 +140,11 @@ for (i in avgInfo){
        }
     x++;
 }
-const CHART = document.getElementById("lineChart");
-let lineChart = new Chart(CHART, {
+var create_canvas = document.createElement("canvas");
+var ctx = create_canvas.getContext("2d");
+div = document.getElementById("graph"); 
+div.replaceChild(create_canvas, div.childNodes[0]);
+var lineChart = new Chart(ctx, {
  type: 'line',
     data: {
     labels: ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"],
