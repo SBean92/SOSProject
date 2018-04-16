@@ -3,10 +3,12 @@
 <html>
 <style>
     #head{
-        background-color: darkcyan;
+        background-color: #ffffff;
         height: 5%;
         width: 100%;
+        border: 2px solid #000;
     }
+
     canvas{
         width: 600px !important;
     }
@@ -29,6 +31,7 @@
         left: 7.5%;
         background-color: #ffffff;
     }
+
     #chartA{
         width: 600px;
         text-align:center;
@@ -47,9 +50,29 @@
         left: 47.5%;
         background-color: #ffffff;
     }
+
     .chart{
         transition: 0.5s;
         height: 0;
+    }
+
+    #legend {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid #000;
+        position: absolute;
+        top: 7%;
+        right: 7%;
+    }
+
+    #legend h3 {
+        margin-top: 0;
+    }
+      
+    #legend img {
+        vertical-align: middle;
     }
 </style>
 <head>
@@ -66,6 +89,7 @@
   <option value="Sunday">Sunday
 </select></div>
     <div id="map" style="width:100%;height:95%"></div>
+    <div id="legend"><h3>Available Bikes</h3></div>
     <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
     <div id="chartB" class="chart">
     <div id="graph"><div>
@@ -134,7 +158,13 @@
     });
     }
     newMarkers();
-}   
+    var legend = document.getElementById('legend');
+    var div = document.createElement('div');
+    div.innerHTML = '<img src="http://www.googlemapsmarkers.com/v1/00cc00/"> >75%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ff9900/"> 74%-1%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ff3300"> 0%';
+    legend.appendChild(div);
+  }
 
     var showGraph = false;
     function showHide() {
