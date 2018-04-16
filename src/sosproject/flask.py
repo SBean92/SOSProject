@@ -69,6 +69,8 @@ def display6():
     hourly_weather_output = hourly_weather_schema.dump(hourly_weather_data).data
     return jsonify(root6=hourly_weather_output)
 
+@app.route('/root7')
+
 def display7():
     avg_bike_data_day = AvgBikeDataDay.query.all()
     avg_bike_schema_day = AvgBikeDaySchema(many=True)
