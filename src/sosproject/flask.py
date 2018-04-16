@@ -15,6 +15,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sos:ozflanagan1@sos-database.cv
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
+@app.route('/')
+
+def index():
+    return render_template('index.html')
+
 @app.route('/root1')
 
 def display1():
