@@ -111,6 +111,19 @@
 
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
     standInfo = null;
+    if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+            var user = new google.maps.Marker({
+                position: pos,
+            });
+            user.setMap(map);
+        });
+        
+    }
     function availableBikes(data){
         $.getJSON("root3.json", function(root3){
            standInfo = root3.root3;
