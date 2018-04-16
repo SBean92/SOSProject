@@ -30,6 +30,25 @@
         left: 7.5%;
         background-color: #ffffff;
     }
+    #chartA{
+        width: 700px;
+        height: 300px;
+        text-align:center;
+        position: absolute;
+        Bottom: 0%;
+        left: 35%;
+        background-color: #ffffff;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        transition-duration: 0.5s;
+    }
+
+    #chartC{
+        position: absolute;
+        bottom: 0%;
+        left: 35%;
+        background-color: #ffffff;
+    }
     .chart{
         transition: 0.5s;
         height: 0;
@@ -52,6 +71,11 @@
     <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
     <div id="chartB" class="chart">
     <div id="graph"><div>
+</div></div>
+    </div>
+    <span id="chartA" onclick="showHide1()">&#9776; Show Graph</span>
+    <div id="chartC" class="chart">
+    <div id="graph1"><div>
 </div></div>
     </div>
 </body>
@@ -84,7 +108,7 @@
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
                             "<div><b>Available bikes: </b>"+bikes+"</div>"+
                             "<div><b>Available stands: </b>"+stands+"</div>" +
-                    "<div><button onclick='avgBikes("+number+")'>Show chart averages</button></div>";
+                    "<div><button onclick='avgBikes("+number+")'>Show chart hourly averages</button></div>" + "<div><button onclick='avgBikesDay("+number+")'>Show chart daily averages</button></div>";
                 var infoWindow = new google.maps.InfoWindow({});
                 var marker = new google.maps.Marker({
                     position: {lat: lati, lng: long},
@@ -115,6 +139,20 @@
             document.getElementById('chartB').style.height = "0px";
             document.getElementById('chartH').style.height = "Initial";
             document.getElementById('chartH').innerHTML = "&#9776; Show Graph";
+            showGraph =false;
+        }
+    }
+        var showGraph1 = false;
+    function showHide1() {
+        if (showGraph == false){
+            document.getElementById('chartC').style.height = "300px";
+            document.getElementById('chartA').style.height = "320px";
+            document.getElementById('chartA').innerHTML = "&#9776; Hide Graph";
+            showGraph = true;
+        } else {
+            document.getElementById('chartC').style.height = "0px";
+            document.getElementById('chartA').style.height = "Initial";
+            document.getElementById('chartA').innerHTML = "&#9776; Show Graph";
             showGraph =false;
         }
     }
@@ -166,6 +204,93 @@ var lineChart = new Chart(ctx, {
     title: {
       display: true,
       text: names[numint] + ': '+ day,
+    },
+    scales: {
+      yAxes: [{
+          ticks: {
+              beginAtZero: true
+          }
+      }]
+  }
+  }
+});
+ });
+    }
+    
+    
+function avgBikesDay(num1){
+    $.getJSON("root5.json", function(root5){
+       avgInfoDay = root5.root5;
+       var ava_bikes_day =[];
+       var numint1 = parseInt(num1) - 1;
+       var names = ["Clarendon Row","Blessington Street","Bolton Street","Greek Street","Charlemont Street","Christchurch Place","High Street","Custom House Quay","Exchequer Street","Dame Street","Earlsfort Terrace","Eccles Street","Fitzwilliam Square West","Fownes Street Upper","Hardwicke Street","Georges Quay","Golden Lane","Grantham Street","Herbert Place","","Leinster Street South","Townsend Street","Custom House","Cathal Brugha Street","Merrion Square East","Merrion Square West","Molesworth Street","Mountjoy Square West","Ormond Quay Upper","Parnell Square North","Parnell Street","Pearse Street","Princes Street / O'Connell Street","Portobello Harbour","Smithfield","St. Stephen's Green East","St. Stephen's Green South","Talbot Street","Wilton Terrace","Jervis Street","Harcourt Terrace","Smithfield North","Portobello Road","Upper Sherrard Street","Deverell Place","Strand Street Great","Herbert Street","Excise Walk","Guild Street","George's Lane","York Street West","York Street East","Newman House","Clonmel Street","Hatch Street","Mount Street Lower","Grattan Street","Sir Patrick's Dun","Denmark Street Great","North Circular Road","Hardwicke Place","Lime Street","Fenian Street","Sandwith Street","Convention Centre","New Central Bank","The Point","Hanover Quay","Grand Canal Dock","Barrow Street","Kevin Street","John Street West","Francis Street","Oliver Bond Street","James Street","Market Street South","Wolfe Tone Street","Mater Hospital","Eccles Street East","St James Hospital (Luas)","St. James Hospital (Central)","Mount Brown","Emmet Road","Brookfield Road","Rothe Abbey","Parkgate Street","Collins Barracks Museum","Blackhall Place","Fitzwilliam Square East","Benson Street","South Dock Road","Heuston Bridge (North)","Heuston Station (Central)","Heuston Station (Car Park)","Royal Hospital","Kilmainham Lane","Kilmainham Gaol","Frederick Street South","City Quay","Heuston Bridge (South)","King Street North","Western Way","Grangegorman Lower (South)","Grangegorman Lower (Central)","Grangegorman Lower (North)"];
+       var ava_stands_day = [];
+        console.log(ava_stands_day)
+
+
+for (j in avgInfoDay){
+   if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Monday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }}
+for (j in avgInfoDay){
+    if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Tuesday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }}
+for (j in avgInfoDay){
+    if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Wednesday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }}
+for (j in avgInfoDay){
+    if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Thursday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }}
+for (j in avgInfoDay){
+    if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Friday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }}
+for (j in avgInfoDay){
+    if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Saturday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }}
+for (j in avgInfoDay){
+    if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == "Sunday"){
+    ava_bikes_day.push(avgInfoDay[j].a_bikes);
+    ava_stands_day.push(avgInfoDay[j].a_stands);
+       }
+       }
+      
+var create_canvas = document.createElement("canvas");
+var ctx = create_canvas.getContext("2d");
+div = document.getElementById("graph1"); 
+div.replaceChild(create_canvas, div.childNodes[0]);
+var lineChart = new Chart(ctx, {
+ type: 'line',
+    data: {
+    labels: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    datasets: [{ 
+        data: ava_bikes_day,
+        label: "Average free bikes",
+        borderColor: "#3e95cd",
+        fill: false
+      },
+    { 
+        data: ava_stands_day,
+        label: "Average free stands",
+        borderColor: "#8e5ea2",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: names[numint1],
     },
     scales: {
       yAxes: [{
