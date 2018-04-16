@@ -103,13 +103,23 @@
                 var number = stations[i].number;
                 var bikes = standInfo[i].a_bikes;
                 var stands = standInfo[i].stands;
+                var colour = "http://www.googlemapsmarkers.com/v1/"+number+"/";
+                if (bikes == 0) {
+                    colour = colour+"ff3300/"
+                } else if ((bikes / stands) > 0.74){
+                    colour = colour+"00cc00/"
+                } else {
+                    colour = colour+"ff9900/"
+                }
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
                             "<div><b>Available bikes: </b>"+bikes+"</div>"+
                             "<div><b>Available stands: </b>"+stands+"</div>" +
                     "<div><button onclick='avgBikes("+number+")'>Show chart hourly averages</button></div>" + "<div><button onclick='avgBikesDay("+number+")'>Show chart daily averages</button></div>";
                 var infoWindow = new google.maps.InfoWindow({});
+                var markerCol = new google.maps.MarkerImage(colour)
                 var marker = new google.maps.Marker({
                     position: {lat: lati, lng: long},
+                    icon: markerCol,
                     title: name
                 });
                 marker.content = info;
