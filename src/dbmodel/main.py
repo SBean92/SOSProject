@@ -56,6 +56,14 @@ class HourlyWeatherData(db.Model):
     timestamp = db.Column('timestamp', db.Unicode, primary_key = True)
     isRaining = db.Column('isRaining', db.Integer)
     description = db.Column('description', db.Unicode)
+    
+class AvgBikeDataDay(db.Model):
+    __tablename__ = 'averages_daily'
+    index = db.Column('index', db.Integer, primary_key = True)
+    number = db.Column('number', db.Integer)
+    weekday = db.Column('weekday', db.Unicode)
+    a_bikes = db.Column('a_stands', db.Integer)
+    a_stands = db.Column('a_bikes', db.Integer)
 
 class StaticBikeSchema(ma.ModelSchema):
     class Meta:
@@ -76,4 +84,8 @@ class DailyWeatherSchema(ma.ModelSchema):
 class HourlyWeatherSchema(ma.ModelSchema):
     class Meta:
         model = HourlyWeatherData
+        
+class AvgBikeDaySchema(ma.ModelSchema):
+    class Meta:
+        model = AvgBikeDataDay
         
