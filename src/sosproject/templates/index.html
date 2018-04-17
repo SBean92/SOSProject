@@ -142,11 +142,15 @@
                 var stands = standInfo[i].stands;
                 var colour = "http://www.googlemapsmarkers.com/v1/"+number+"/";
                 if (bikes == 0) {
-                    colour = colour+"ff3300/"
-                } else if ((bikes / stands) > 0.49){
+                    colour = colour+"99aabb/"
+                } else if ((bikes / stands) >= 0.7){
                     colour = colour+"00cc00/"
-                } else {
-                    colour = colour+"ff9900/"
+                } else if ((bikes / stands >= 0.3)){
+                    colour = colour+"ffff00/"
+                } else if ((bikes / stands) > 0.1) {
+                    colour = colour+"ff6600/"
+                }else if ((bikes / stands) <= 0.1) {
+                    colour = colour +"ff3300/"
                 }
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
                             "<div><b>Available bikes: </b>"+bikes+"</div>"+
@@ -173,9 +177,10 @@
     newMarkers();
     var legend = document.getElementById('legend');
     var div = document.createElement('div');
-    div.innerHTML = '<img src="http://www.googlemapsmarkers.com/v1/00cc00/"> >50%'+
-                    '<img src="http://www.googlemapsmarkers.com/v1/ff9900/"> <50%>'+
-                    '<img src="http://www.googlemapsmarkers.com/v1/ff3300"> None';
+    div.innerHTML = '<img src="http://www.googlemapsmarkers.com/v1/00cc00/"> >70%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ffff00/"> 69-30%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ff6600/"> 29-1%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/99aabb/"> None';
     legend.appendChild(div);
   }
 
