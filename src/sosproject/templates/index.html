@@ -64,7 +64,8 @@
         border: 2px solid #000;
         position: absolute;
         top: 7%;
-        right: 7%;
+        right: 5%;
+        width: 19%;
     }
 
     #legend h3 {
@@ -74,6 +75,41 @@
     #legend img {
         vertical-align: middle;
     }
+
+    #inputBox {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid #000;
+        position: absolute;
+        top: 22.5%;
+        right: 5%;
+        width: 19%;
+    }
+
+    #inputBox h3 {
+        margin-top: 0;
+        margin-bottom: 2;
+    }
+
+    #origin-input,
+      #destination-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        margin-bottom: 1;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 92%;
+      }
+
+    #origin-input:focus,
+      #destination-input:focus {
+        border-color: #4d90fe;
+      }
 </style>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -90,6 +126,11 @@
 </select></div>
     <div id="map" style="width:100%;height:95%"></div>
     <div id="legend"><h3>Available Bikes</h3></div>
+    <div id="inputBox">
+        <h3>Plot Route</h3>
+        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
+    </div>
     <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
     <div id="chartB" class="chart">
     <div id="graph"><div>
@@ -108,7 +149,7 @@
         zoom: 14.175,
         mapTypeId: google.maps.MapTypeId.roadmap
     };
-
+    
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
     standInfo = null;
     if (navigator.geolocation) {
@@ -182,6 +223,15 @@
                     '<img src="http://www.googlemapsmarkers.com/v1/ff6600/"> 29-1%'+
                     '<img src="http://www.googlemapsmarkers.com/v1/99aabb/"> None';
     legend.appendChild(div);
+    function autoComp(field) {
+        var input = document.getElementById(field);
+        var options = {
+            componentRestrictions: {country: 'IE'}
+        };
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+    }
+    autoComp('origin-input');
+    autoComp('destination-input');
   }
 
     var showGraph = false;
@@ -336,6 +386,6 @@ var lineChart = new Chart(ctx, {
  });
     }
     </script>
-<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3UCB640zi7tQblqiBA0JhFN0g057f81I&callback=myMap"></script>
+<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBGhzyl6gLTsqUQ7EqsTaU8vU_1MmhRDCM&libraries=places&callback=myMap"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 </html>
