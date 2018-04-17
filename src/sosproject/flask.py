@@ -6,7 +6,7 @@ Created on 20 Mar 2018
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dbmodel.main import StaticBikeData, DynamicBikeData, StaticBikeSchema, DynamicBikeSchema, AvgBikeData, AvgBikeSchema, DailyWeatherData, DailyWeatherSchema, HourlyWeatherData, HourlyWeatherSchema,\
-    AvgBikeDataDay
+    AvgBikeDataDay, AvgBikeDaySchema
 import pymysql
 pymysql.install_as_MySQLdb()
 from flask.json import jsonify

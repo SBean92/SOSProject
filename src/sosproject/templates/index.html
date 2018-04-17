@@ -198,7 +198,7 @@
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
                             "<div><b>Available bikes: </b>"+bikes+"</div>"+
                             "<div><b>Available stands: </b>"+stands+"</div>" +
-                    "<div><button onclick='avgBikes("+number+")'>Show chart hourly averages</button></div>" + "<div><button onclick='avgBikesDay("+number+")'>Show chart daily averages</button></div>";
+                    "<div><button onclick='avgBikes("+number+");showGraphInfoWin()'>Show chart hourly averages</button></div>" + "<div><button onclick='avgBikesDay("+number+");showGraphInfoWin1()'>Show chart daily averages</button></div>";
                 var infoWindow = new google.maps.InfoWindow({});
                 var markerCol = new google.maps.MarkerImage(colour)
                 var marker = new google.maps.Marker({
@@ -346,6 +346,32 @@
             showGraph =false;
         }
     }
+            var showGraphIW = false;
+    function showGraphInfoWin() {
+        if (showGraph == false){
+            document.getElementById('chartB').style.height = "300px";
+            document.getElementById('chartH').style.height = "320px";
+            document.getElementById('chartH').innerHTML = "&#9776; Hide Graph";
+            showGraphIW = true;
+        } else {
+            document.getElementById('chartB').style.height = "0px";
+            document.getElementById('chartH').style.height = "Initial";
+            document.getElementById('chartH').innerHTML = "&#9776; Show Graph";
+        }
+    }
+            var showGraphIW1 = false;
+    function showGraphInfoWin1() {
+        if (showGraph == false){
+            document.getElementById('chartC').style.height = "300px";
+            document.getElementById('chartA').style.height = "320px";
+            document.getElementById('chartA').innerHTML = "&#9776; Hide Graph";
+            showGraph = true;
+        } else {
+            document.getElementById('chartC').style.height = "0px";
+            document.getElementById('chartA').style.height = "Initial";
+            document.getElementById('chartA').innerHTML = "&#9776; Show Graph";
+        }
+    }
     function avgBikes(num){
     $.getJSON("root4.json", function(root4){
             avgInfo = root4.root4;
@@ -358,13 +384,13 @@
             var day = document.getElementById("daySelect").value;
             while (x <= 23) {
                 for (i in avgInfo){
-                    var y = 0;
+                    var y = 2;
                     var ystr = x.toString();
                     if (avgInfo[i].number == num && avgInfo[i].weekday == day && avgInfo[i].hour == ystr){
                         ava_bikes.push(avgInfo[i].a_bikes);
                         ava_stands.push(avgInfo[i].a_stands);
                         }
-                    y++;
+                    y+=2;
                 }
                 x++;
             }
@@ -375,7 +401,7 @@
             var lineChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                labels: ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"],
+                labels: ["2am","4am","6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm", "12am"],
                 datasets: [{ 
                     data: ava_bikes,
                     label: "Average free bikes",

@@ -37,7 +37,7 @@ class DynamicBikeData(db.Model):
     timestamp = db.Column('timestamp', db.BigInteger, primary_key = True)
     
 class AvgBikeData(db.Model):
-    __tablename__ = 'averages'
+    __tablename__ = 'averages_hourly'
     index = db.Column('index', db.Integer, primary_key = True)
     number = db.Column('number', db.Integer)
     weekday = db.Column('weekday', db.Unicode)
