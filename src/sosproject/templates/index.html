@@ -34,12 +34,13 @@
     }	
 
     canvas{
-        width: 500px !important;
+        width: 500px !important; 
         border-left: 1.5px solid #000;
         border-right: 1.5px solid #000;
     }
 
     #chartH{
+        display: inline;
         width: 500px;
         text-align:center;
         position: absolute;
@@ -93,7 +94,7 @@
         position: absolute;
         top: 7%;
         right: 5%;
-        width: 19%;
+        width: 23%;
     }
 
     #legend h3 {
@@ -111,9 +112,9 @@
         margin: 10px;
         border: 2px solid #000;
         position: absolute;
-        top: 22.5%;
+        top: 33.3%;
         right: 5%;
-        width: 19%;
+        width: 23%;
     }
     #dayinput {
         font-family: Arial, sans-serif;
@@ -124,7 +125,7 @@
         position: absolute;
         top: 22.5%;
         right: 5%;
-        width: 19%;
+        width: 23%;
     }
     #dayinput h3 {
         margin-top: 0;
@@ -163,13 +164,13 @@
         <h1>Where's me bleedin' bike?</h1></div>
     <div id="map" style="width:100%;height:94%"></div>
     <div id="legend"><h3>Available Bikes</h3></div>
-<!--
+
     <div id="inputBox">
         <h3>Plot Route</h3>
         <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
         <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
     </div>
--->
+
     <div id="dayinput">
     <h3>Select your day of the week</h3><select id="daySelect">
   <option value="Monday">Monday
@@ -274,7 +275,8 @@
                     '<img src="http://www.googlemapsmarkers.com/v1/99aabb/"> None';
     legend.appendChild(div);
     new AutocompleteDirectionsHandler(map);
-    /*function autoComp(field) {
+    autoComp();
+    function autoComp(field) {
         var input = document.getElementById(field);
         var options = {
             componentRestrictions: {country: 'IE'}
@@ -305,72 +307,72 @@
                 }
             })
         }
-    }*/
+    }
   }
 
-  function AutocompleteDirectionsHandler(map) {
-        this.map = map;
-        this.originPlaceId = null;
-        this.destinationPlaceId = null;
-        this.travelMode = 'WALKING';
-        var originInput = document.getElementById('origin-input');
-        var destinationInput = document.getElementById('destination-input');
-        this.directionsService = new google.maps.DirectionsService;
-        this.directionsDisplay = new google.maps.DirectionsRenderer;
-        this.directionsDisplay.setMap(map);
-
-        var originAutocomplete = new google.maps.places.Autocomplete(
-            originInput, {placeIdOnly: true});
-        var destinationAutocomplete = new google.maps.places.Autocomplete(
-            destinationInput, {placeIdOnly: true});
-
-        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
-        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
-      }
+//  function AutocompleteDirectionsHandler(map) {
+//        this.map = map;
+//        this.originPlaceId = null;
+//        this.destinationPlaceId = null;
+//        this.travelMode = 'WALKING';
+//        var originInput = document.getElementById('origin-input');
+//        var destinationInput = document.getElementById('destination-input');
+//        this.directionsService = new google.maps.DirectionsService;
+//        this.directionsDisplay = new google.maps.DirectionsRenderer;
+//        this.directionsDisplay.setMap(map);
+//
+//        var originAutocomplete = new google.maps.places.Autocomplete(
+//            originInput, {placeIdOnly: true});
+//        var destinationAutocomplete = new google.maps.places.Autocomplete(
+//            destinationInput, {placeIdOnly: true});
+//
+//        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+//        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+//      }
     
-      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
-        var me = this;
-        autocomplete.bindTo('bounds', this.map);
-        autocomplete.addListener('place_changed', function() {
-          var place = autocomplete.getPlace();
-          if (!place.place_id) {
-            window.alert("Please select an option from the dropdown list.");
-            return;
-          }
-          if (mode === 'ORIG') {
-            me.originPlaceId = place.place_id;
-          } else {
-            me.destinationPlaceId = place.place_id;
-          }
-          me.route();
-        });
+//      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+//        var me = this;
+//        autocomplete.bindTo('bounds', this.map);
+//        autocomplete.addListener('place_changed', function() {
+//          var place = autocomplete.getPlace();
+//          if (!place.place_id) {
+//            window.alert("Please select an option from the dropdown list.");
+//            return;
+//          }
+//          if (mode === 'ORIG') {
+//            me.originPlaceId = place.place_id;
+//          } else {
+//            me.destinationPlaceId = place.place_id;
+//          }
+//          me.route();
+//        });
+//
+//      };
 
-      };
-
-      AutocompleteDirectionsHandler.prototype.route = function() {
-        if (!this.originPlaceId || !this.destinationPlaceId) {
-          return;
-        }
-        var me = this;
-
-        this.directionsService.route({
-          origin: {'placeId': this.originPlaceId},
-          destination: {'placeId': this.destinationPlaceId},
-          travelMode: this.travelMode
-        }, function(response, status) {
-          if (status === 'OK') {
-            me.directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-      };
+//      AutocompleteDirectionsHandler.prototype.route = function() {
+//        if (!this.originPlaceId || !this.destinationPlaceId) {
+//          return;
+//        }
+//        var me = this;
+//
+//        this.directionsService.route({
+//          origin: {'placeId': this.originPlaceId},
+//          destination: {'placeId': this.destinationPlaceId},
+//          travelMode: this.travelMode
+//        }, function(response, status) {
+//          if (status === 'OK') {
+//            me.directionsDisplay.setDirections(response);
+//          } else {
+//            window.alert('Directions request failed due to ' + status);
+//          }
+//        });
+//      };
 
     var showGraph = false;
     function showHide() {
         if (showGraph == false){
-            document.getElementById('chartB').style.height = "300px";
-            document.getElementById('chartH').style.height = "320px";
+            document.getElementById('chartB').style.height = "250px";
+            document.getElementById('chartH').style.height = "270px";
             document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraph = true;
         } else {
@@ -383,8 +385,8 @@
         var showGraph1 = false;
     function showHide1() {
         if (showGraph == false){
-            document.getElementById('chartC').style.height = "300px";
-            document.getElementById('chartA').style.height = "320px";
+            document.getElementById('chartC').style.height = "250px";
+            document.getElementById('chartA').style.height = "270px";
             document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraph = true;
         } else {
@@ -397,27 +399,29 @@
             var showGraphIW = false;
     function showGraphInfoWin() {
         if (showGraph == false){
-            document.getElementById('chartB').style.height = "300px";
-            document.getElementById('chartH').style.height = "320px";
+            document.getElementById('chartB').style.height = "250px";
+            document.getElementById('chartH').style.height = "270px";
             document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraphIW = true;
         } else {
             document.getElementById('chartB').style.height = "0px";
             document.getElementById('chartH').style.height = "Initial";
             document.getElementById('chartH').innerHTML = "&#9776; <p>Show Graph</p>";
+            showGraphIW = false;
         }
     }
             var showGraphIW1 = false;
     function showGraphInfoWin1() {
         if (showGraph == false){
-            document.getElementById('chartC').style.height = "300px";
-            document.getElementById('chartA').style.height = "320px";
+            document.getElementById('chartC').style.height = "250px";
+            document.getElementById('chartA').style.height = "270px";
             document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
-            showGraph = true;
+            showGraphIW1 = true;
         } else {
             document.getElementById('chartC').style.height = "0px";
             document.getElementById('chartA').style.height = "Initial";
             document.getElementById('chartA').innerHTML = "&#9776; <p>Show Graph</p>";
+            showGraphIW1 = false;
         }
     }
     function avgBikes(num){
@@ -442,7 +446,12 @@
                 }
                 x++;
             }
+            var can_exist = document.getElementById('canvas1');
+            if (can_exist != null){
+                can_exist.parentNode.removeChild(can_exist);
+            }
             var create_canvas = document.createElement("canvas");
+            create_canvas.id = "canvas1";
             var ctx = create_canvas.getContext("2d");
             div = document.getElementById("graph"); 
             div.replaceChild(create_canvas, div.childNodes[0]);
@@ -507,7 +516,12 @@ function avgBikesDay(num1){
     dailyBikesAvg("Saturday");
     dailyBikesAvg("Sunday");
       
+var can_exist = document.getElementById('canvas2');
+if (can_exist != null){
+    can_exist.parentNode.removeChild(can_exist);
+}
 var create_canvas = document.createElement("canvas");
+create_canvas.id = "canvas2";
 var ctx = create_canvas.getContext("2d");
 div = document.getElementById("graph1");
 div.replaceChild(create_canvas, div.childNodes[0]);
