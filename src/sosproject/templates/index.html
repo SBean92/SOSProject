@@ -2,52 +2,80 @@
 
 <html>
 <style>
+    @import url('https://fonts.googleapis.com/css?family=Bungee+Shade');
+    h1 {
+        font-family: 'Bungee Shade', cursive;
+        font-size: 1.2em;
+        text-align: center;
+    }
+    p {
+        display:inline;
+        font-size: 1em;
+        font-family: Arial, sans-serif;
+    }
+    h3 {
+        font-size: 1em;
+        font-family: Arial, sans-serif;
+    }
     #head{
         background-color: #ffffff;
         height: 6%;
         width: 100%;
-        border: 2px solid #000;
+        border: 1.5px solid #000;
+        line-height: 10px;
     }
+    
+  .loading{ 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 50%;
+    }	
 
     canvas{
-        width: 600px !important;
+        width: 500px !important;
+        border-left: 1.5px solid #000;
+        border-right: 1.5px solid #000;
     }
 
     #chartH{
-        width: 600px;
+        width: 500px;
         text-align:center;
         position: absolute;
         bottom: 0%;
-        left: 7.5%;
+        left: 5%;
         background-color: #ffffff;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
         transition-duration: 0.5s;
+        border: 1.5px solid #000;
     }
 
     #chartB{
         position: absolute;
         bottom: 0%;
-        left: 7.5%;
+        left: 5%;
         background-color: #ffffff;
     }
 
     #chartA{
-        width: 600px;
+        width: 500px;
         text-align:center;
         position: absolute;
-        Bottom: 0%;
-        left: 47.5%;
+        bottom: 0%;
+        left: 50%;
         background-color: #ffffff;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
         transition-duration: 0.5s;
+        border: 1.5px solid #000;
     }
 
     #chartC{
         position: absolute;
         bottom: 0%;
-        left: 47.5%;
+        left: 50%;
         background-color: #ffffff;
     }
 
@@ -87,7 +115,21 @@
         right: 5%;
         width: 19%;
     }
-
+    #dayinput {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid #000;
+        position: absolute;
+        top: 22.5%;
+        right: 5%;
+        width: 19%;
+    }
+    #dayinput h3 {
+        margin-top: 0;
+        margin-bottom: 2;
+    }
     #inputBox h3 {
         margin-top: 0;
         margin-bottom: 2;
@@ -117,7 +159,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-    <div id=head><center><img src="bikeanimation.gif" height="24" style="margin:0">Where's me bleedin' bike?!?<img src="bikeanimation.gif" height="24" style="margin:0"></center><select id="daySelect">
+    <div id=head>
+        <h1>Where's me bleedin' bike?</h1></div>
+    <div id="map" style="width:100%;height:94%"></div>
+    <div id="legend"><h3>Available Bikes</h3></div>
+<!--
+    <div id="inputBox">
+        <h3>Plot Route</h3>
+        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
+    </div>
+-->
+    <div id="dayinput">
+    <h3>Select your day of the week</h3><select id="daySelect">
   <option value="Monday">Monday
   <option value="Tuesday">Tuesday
   <option value="Wednesday">Wednesday
@@ -125,20 +179,14 @@
   <option value="Friday">Friday
   <option value="Saturday">Saturday
   <option value="Sunday">Sunday
-</select></div>
-    <div id="map" style="width:100%;height:94%"></div>
-    <div id="legend"><h3>Available Bikes</h3></div>
-    <div id="inputBox">
-        <h3>Plot Route</h3>
-        <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
-        <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
+</select>
     </div>
-    <span id="chartH" onclick="showHide()">&#9776; Show Graph</span>
+    <span id="chartH" onclick="showHide()">&#9776; <p>Show Graph</p></span>
     <div id="chartB" class="chart">
     <div id="graph"><div>
 </div></div>
     </div>
-    <span id="chartA" onclick="showHide1()">&#9776; Show Graph</span>
+    <span id="chartA" onclick="showHide1()">&#9776; <p>Show Graph</p></span>
     <div id="chartC" class="chart">
     <div id="graph1"><div>
 </div></div>
@@ -197,8 +245,8 @@
                 }
                 var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
                             "<div><b>Available bikes: </b>"+bikes+"</div>"+
-                            "<div><b>Available stands: </b>"+stands+"</div>" +
-                    "<div><button onclick='avgBikes("+number+");showGraphInfoWin()'>Show chart hourly averages</button></div>" + "<div><button onclick='avgBikesDay("+number+");showGraphInfoWin1()'>Show chart daily averages</button></div>";
+                            "<div><b>Available stands: </b>"+stands+"</div><br>" +
+                    "<div><button onclick='avgBikes("+number+");showGraphInfoWin()'>Show chart hourly averages</button></div><br>" + "<div><button onclick='avgBikesDay("+number+");showGraphInfoWin1()'>Show chart daily averages</button></div>";
                 var infoWindow = new google.maps.InfoWindow({});
                 var markerCol = new google.maps.MarkerImage(colour)
                 var marker = new google.maps.Marker({
@@ -323,12 +371,12 @@
         if (showGraph == false){
             document.getElementById('chartB').style.height = "300px";
             document.getElementById('chartH').style.height = "320px";
-            document.getElementById('chartH').innerHTML = "&#9776; Hide Graph";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraph = true;
         } else {
             document.getElementById('chartB').style.height = "0px";
             document.getElementById('chartH').style.height = "Initial";
-            document.getElementById('chartH').innerHTML = "&#9776; Show Graph";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Show Graph</p>";
             showGraph =false;
         }
     }
@@ -337,12 +385,12 @@
         if (showGraph == false){
             document.getElementById('chartC').style.height = "300px";
             document.getElementById('chartA').style.height = "320px";
-            document.getElementById('chartA').innerHTML = "&#9776; Hide Graph";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraph = true;
         } else {
             document.getElementById('chartC').style.height = "0px";
             document.getElementById('chartA').style.height = "Initial";
-            document.getElementById('chartA').innerHTML = "&#9776; Show Graph";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Show Graph</p>";
             showGraph =false;
         }
     }
@@ -351,12 +399,12 @@
         if (showGraph == false){
             document.getElementById('chartB').style.height = "300px";
             document.getElementById('chartH').style.height = "320px";
-            document.getElementById('chartH').innerHTML = "&#9776; Hide Graph";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraphIW = true;
         } else {
             document.getElementById('chartB').style.height = "0px";
             document.getElementById('chartH').style.height = "Initial";
-            document.getElementById('chartH').innerHTML = "&#9776; Show Graph";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Show Graph</p>";
         }
     }
             var showGraphIW1 = false;
@@ -364,12 +412,12 @@
         if (showGraph == false){
             document.getElementById('chartC').style.height = "300px";
             document.getElementById('chartA').style.height = "320px";
-            document.getElementById('chartA').innerHTML = "&#9776; Hide Graph";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
             showGraph = true;
         } else {
             document.getElementById('chartC').style.height = "0px";
             document.getElementById('chartA').style.height = "Initial";
-            document.getElementById('chartA').innerHTML = "&#9776; Show Graph";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Show Graph</p>";
         }
     }
     function avgBikes(num){
@@ -398,6 +446,8 @@
             var ctx = create_canvas.getContext("2d");
             div = document.getElementById("graph"); 
             div.replaceChild(create_canvas, div.childNodes[0]);
+            Chart.defaults.global.defaultFontFamily = "Arial";
+            Chart.defaults.global.defaultFontColor = 'black';
             var lineChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -459,8 +509,10 @@ function avgBikesDay(num1){
       
 var create_canvas = document.createElement("canvas");
 var ctx = create_canvas.getContext("2d");
-div = document.getElementById("graph1"); 
+div = document.getElementById("graph1");
 div.replaceChild(create_canvas, div.childNodes[0]);
+Chart.defaults.global.defaultFontFamily = "Arial";
+Chart.defaults.global.defaultFontColor = 'black';
 var lineChart = new Chart(ctx, {
  type: 'line',
     data: {
@@ -487,7 +539,7 @@ var lineChart = new Chart(ctx, {
     scales: {
       yAxes: [{
           ticks: {
-              beginAtZero: true
+              beginAtZero: true,
           }
       }]
   }
