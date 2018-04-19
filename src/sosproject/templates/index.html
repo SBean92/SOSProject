@@ -85,6 +85,28 @@
         height: 0;
     }
 
+    #iw-container  .iw-title {
+   font-family: 'Open Sans Condensed', sans-serif;
+   font-size: 22px;
+   font-weight: 400;
+   padding: 10px;
+   background-color: #000;
+   color: white;
+   margin: 5px;
+   border-radius: 2px 2px 0 0;
+}
+
+    .gm-style-iw {
+   width: 200px !important;
+   top: 15px !important;
+   left: 0 !important;
+   background-color: #fff;
+   margin: 2.5px;
+   padding: 5px;
+   box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+   border-radius: 2px 2px 10px 10px;
+}
+
     #legend {
         font-family: Arial, sans-serif;
         background: #fff;
@@ -156,12 +178,13 @@
 </style>
 <head>
     <link rel="icon" href="marker.png" type="image/gif" sizes="16x16">
-    <title>Wheres me bike?</title>
+    <title>Wheres art thine bike?</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
     <div id=head>
-        <h1>Where's me bleedin' bike?</h1></div>
+        <h1><img src="bikeanimation.gif" height="24px">Where's me bleedin' bike?<img src="bikeanimation.gif" height="24px"></h1>
+    </div>
     <div id="map" style="width:100%;height:94%"></div>
     <div id="legend"><h3>Available Bikes</h3></div>
 
@@ -246,11 +269,33 @@
                 }else if ((bikes / stands) <= 0.1) {
                     colour = colour +"ff3300/"
                 }
-                var info = "<h3><b>"+number+":</b> "+name+"</h3>"+
-                            "<div><b>Available bikes: </b>"+bikes+"</div>"+
-                            "<div><b>Available stands: </b>"+stands+"</div><br>" +
-                    "<div><button onclick='avgBikes("+number+");showGraphInfoWin()'>Show chart hourly averages</button></div><br>" + "<div><button onclick='avgBikesDay("+number+");showGraphInfoWin1()'>Show chart daily averages</button></div>";
+                var info = "<div id='iw-container'><h3 class='iw-title'><b>"+number+":</b> "+name+"</h3>"+
+                            "<div class='gm-style-iw'><b>Available bikes: </b>"+bikes+"<br>"+
+                            "<b>Available stands: </b>"+stands+"<br>" +
+                    "<button onclick='avgBikes("+number+");showGraphInfoWin()'>Show chart hourly averages</button><br>" + "<button onclick='avgBikesDay("+number+");showGraphInfoWin1()'>Show chart daily averages</button></div></div>";
                 infoWindows[i] = new google.maps.InfoWindow({});
+                google.maps.event.addListener(infoWindows[i], 'domready', function() {
+
+                    var iwOuter = $('.gm-style-iw');
+                    var iwBackground = iwOuter.prev();
+                    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+                    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': '#5a5a5a 0px 1px 6px', 'z-index' : '1'});
+                    var iwCloseBtn = iwOuter.next();
+
+                    iwCloseBtn.css({
+                    opacity: '1',
+                    right: '38px', top: '3px',
+                    border: '7px solid #000',
+                    'border-radius': '13px', 
+                    'box-shadow': '0 0 5px #5a5a5a' 
+                    });
+                    iwCloseBtn.mouseout(function(){
+                    $(this).css({opacity: '1'});
+                    });
+                });
                 var markerCol = new google.maps.MarkerImage(colour)
                 markers[i] = new google.maps.Marker({
                     position: {lat: lati, lng: long},
@@ -283,7 +328,7 @@
                     '<img src="http://www.googlemapsmarkers.com/v1/ff6600/"> 29-1%'+
                     '<img src="http://www.googlemapsmarkers.com/v1/99aabb/"> None';
     legend.appendChild(div);
-  
+    
   }
 
 //  function AutocompleteDirectionsHandler(map) {
@@ -360,21 +405,21 @@
     }
         var showGraph1 = false;
     function showHide1() {
-        if (showGraph == false){
+        if (showGraph1 == false){
             document.getElementById('chartC').style.height = "250px";
             document.getElementById('chartA').style.height = "270px";
             document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
-            showGraph = true;
+            showGraph1 = true;
         } else {
             document.getElementById('chartC').style.height = "0px";
             document.getElementById('chartA').style.height = "Initial";
             document.getElementById('chartA').innerHTML = "&#9776; <p>Show Graph</p>";
-            showGraph =false;
+            showGraph1 =false;
         }
     }
             var showGraphIW = false;
     function showGraphInfoWin() {
-        if (showGraph == false){
+        if (showGraphIW == false){
             document.getElementById('chartB').style.height = "250px";
             document.getElementById('chartH').style.height = "270px";
             document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
@@ -388,7 +433,7 @@
     }
             var showGraphIW1 = false;
     function showGraphInfoWin1() {
-        if (showGraph == false){
+        if (showGraphIW1 == false){
             document.getElementById('chartC').style.height = "250px";
             document.getElementById('chartA').style.height = "270px";
             document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
