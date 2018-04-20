@@ -13,6 +13,7 @@ import MySQLdb
 import traceback
 from collections import OrderedDict
 
+# Gets data from JCDecaux, writes to csv
 def scraper():
     try:
         os.remove('bikes.csv')
@@ -53,6 +54,7 @@ def stationCount():
         count += 1
     return count
 
+# Creates table on AWS database
 def createTable(table):
     conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()    
@@ -75,6 +77,7 @@ def tableExist(table):
         cursor.close()
         return False
 
+# Writes to table on AWS database
 def sqlWrite(table):
     conn = MySQLdb.connect(host = 'sos-database.cvwfzmigbgkv.us-west-2.rds.amazonaws.com', user = 'sos', passwd = 'ozflanagan1', db = 'sosdatabase')
     cursor = conn.cursor()

@@ -16,6 +16,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+# Creates station location and id data
 class StaticBikeData(db.Model):
     __tablename__ = 'bike_static'
     number = db.Column('number', db.Integer, primary_key = True)
@@ -24,7 +25,8 @@ class StaticBikeData(db.Model):
     address = db.Column('address', db.Unicode)
     lat = db.Column('lat', db.Float)
     lng = db.Column('lng', db.Float)
-    
+
+# Creates station available bike and stands data 
 class DynamicBikeData(db.Model):
     __tablename__ = 'bike'
     number = db.Column('number', db.Integer, primary_key = True)
@@ -35,7 +37,8 @@ class DynamicBikeData(db.Model):
     a_stands = db.Column('a_stands', db.Integer)
     a_bikes = db.Column('a_bikes', db.Integer)
     timestamp = db.Column('timestamp', db.BigInteger, primary_key = True)
-    
+
+# Creates average bike and stands data by hour   
 class AvgBikeData(db.Model):
     __tablename__ = 'averages_hourly'
     index = db.Column('index', db.Integer, primary_key = True)
@@ -45,18 +48,21 @@ class AvgBikeData(db.Model):
     a_bikes = db.Column('a_stands', db.Integer)
     a_stands = db.Column('a_bikes', db.Integer)
 
+# Creates daily weather data
 class DailyWeatherData(db.Model):
     __tablename__ = 'daily_weather'
     timestamp = db.Column('timestamp', db.Unicode, primary_key = True)
     isRaining = db.Column('isRaining', db.Integer)
     description = db.Column('description', db.Unicode)
 
+# Creates hourly weather data
 class HourlyWeatherData(db.Model):
     __tablename__ = 'hourly_weather'
     timestamp = db.Column('timestamp', db.Unicode, primary_key = True)
     isRaining = db.Column('isRaining', db.Integer)
     description = db.Column('description', db.Unicode)
-    
+
+# Creates average bike and stands data by day
 class AvgBikeDataDay(db.Model):
     __tablename__ = 'averages_daily'
     index = db.Column('index', db.Integer, primary_key = True)

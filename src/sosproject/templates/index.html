@@ -24,15 +24,6 @@
         border: 1.5px solid #000;
         line-height: 10px;
     }
-    
-  .loading{ 
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    height: 50%;
-    }	
-
     canvas{
         width: 500px !important; 
         border-left: 1.5px solid #000;
@@ -219,6 +210,7 @@
     </div>
 </body>
 <script>
+    // Draws the map
     function myMap() {
     var mapOptions = {
         center: new google.maps.LatLng(53.346521, -6.259077),
@@ -241,8 +233,9 @@
         });
         
     }
+    // Places pins on the map and shows live bike info
     function availableBikes(data){
-        $.getJSON("root3.json", function(root3){
+        $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root3", function(root3){
            standInfo = root3.root3;
         })
     }
@@ -250,7 +243,7 @@
     var infoWindows = [];
     availableBikes();
     function newMarkers(data){
-        $.getJSON("root1.json", function(root1){
+        $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root1", function(root1){
             var stations = root1.root1;
             var options = "0";
             for (i in stations) {
@@ -359,6 +352,7 @@
     
   }
 
+//  Route finder, not implemented
 //  function AutocompleteDirectionsHandler(map) {
 //        this.map = map;
 //        this.originPlaceId = null;
@@ -417,6 +411,7 @@
 //        });
 //      };
 
+    // Shows and hides the charts
     var showGraph = false;
     function showHide() {
         if (showGraph == false){
@@ -473,8 +468,9 @@
             showGraphIW1 = false;
         }
     }
+    // Chart for hourly average bikes and stands
     function avgBikes(num){
-    $.getJSON("root4.json", function(root4){
+    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root4", function(root4){
             avgInfo = root4.root4;
             var ava_bikes =[];
             var numint = parseInt(num) - 1;
@@ -540,9 +536,9 @@
         });
     }
     
-    
+// Chart for daily average bikes and stands    
 function avgBikesDay(num1){
-    $.getJSON("root7.json", function(root7){
+    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root7", function(root7){
        avgInfoDay = root7.root7;
        var ava_bikes_day =[];
        var numint1 = parseInt(num1) - 1;
