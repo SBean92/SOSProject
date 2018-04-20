@@ -22,7 +22,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/root1')
-
+# Root 1 contains station location and id data
 def display1():
     static_bike_data = StaticBikeData.query.all()
     static_bike_schema = StaticBikeSchema(many=True)
@@ -30,7 +30,7 @@ def display1():
     return jsonify(static_output)
 
 @app.route('/root2')
-
+# Root 2 contains station available bike and stands data
 def display2():
     dynamic_bike_data = DynamicBikeData.query.all()
     dynamic_bike_schema = DynamicBikeSchema(many=True)
@@ -38,7 +38,7 @@ def display2():
     return jsonify(dynamic_output)
 
 @app.route('/root3')
-
+# Root 3 contains most recent station available bike and stands data
 def display3():
     live_bike_data = db.engine.execute('SELECT number, LatestUpdate, banking, bonus, status, stands, a_stands, a_bikes FROM(SELECT * FROM bike INNER JOIN (SELECT MAX(timestamp) AS LatestUpdate, number AS number2 FROM bike GROUP BY number2) SubMax ON bike.timestamp = SubMax.LatestUpdate and bike.number = SubMax.number2)bikeLatest;')
     live_bike_schema = DynamicBikeSchema(many=True)
@@ -46,7 +46,7 @@ def display3():
     return jsonify(root3=live_output)
 
 @app.route('/root4')
-
+# Root 4 contains average bike and stands data by hour 
 def display4():
     avg_bike_data = AvgBikeData.query.all()
     avg_bike_schema = AvgBikeSchema(many=True)
@@ -54,7 +54,7 @@ def display4():
     return jsonify(root4=avg_output)
 
 @app.route('/root5')
-
+# Root 5 contains daily weather data
 def display5():
     daily_weather_data = DailyWeatherData.query.all()
     daily_weather_schema = DailyWeatherSchema(many=True)
@@ -62,7 +62,7 @@ def display5():
     return jsonify(root5=daily_weather_output)
 
 @app.route('/root6')
-
+# Root 5 contains hourly weather data
 def display6():
     hourly_weather_data = HourlyWeatherData.query.all()
     hourly_weather_schema = HourlyWeatherSchema(many=True)
@@ -70,7 +70,7 @@ def display6():
     return jsonify(root6=hourly_weather_output)
 
 @app.route('/root7')
-
+# Root 7 contains average bike and stands data by day
 def display7():
     avg_bike_data_day = AvgBikeDataDay.query.all()
     avg_bike_schema_day = AvgBikeDaySchema(many=True)
