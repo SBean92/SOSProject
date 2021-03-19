@@ -11,7 +11,7 @@ configobj==5.0.6
 cryptography==1.2.3
 hibagent==1.0.1
 idna==2.0
-Jinja2==2.8
+Jinja2==2.11.3
 jsonpatch==1.10
 jsonpointer==1.9
 jsonschema==2.6.0
